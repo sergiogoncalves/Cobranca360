@@ -1,0 +1,173 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+
+        <div class="Wid70 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Gerenciamento de pessoa física" outcome="pessoaFisicaPrincipal"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid70 MarAuto WidAutoOnMobile">
+
+            <div class="SeparatorFull"></div>
+            <h:form>
+                <p:button value="Cadastrar título" icon="fa fa-plus-circle  Fs16 White" outcome="tituloCadastro"  styleClass="GreenButton" />
+            </h:form>
+            <div class="SeparatorFull"></div>
+            <div class="Container100 ">
+                <div class="Card ShadowEffect">
+
+                    <h1 class="CardBigTopic TexAlLeft">Filtros</h1>
+                    <div class="SeparatorFull"></div>
+
+                    <h:form id="frmDevedorCredor" acceptcharset="ISO-8859-1">
+
+                        <h:panelGrid columns="2" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="5" columnClasses="alignmentLeft">
+
+                                    <p:outputLabel for="nome" value="Devedor:" styleClass="fonteOutputText"  />
+                                    <p:inputText id="nome" value="#{tituloCtr.nomeDevedor}"/>
+                                    <p:commandButton  id="btnFiltrarCredor" immediate="true" icon="fa fa-search Fs6 Green" action="#{tituloCtr.abrirBuscaPessoa}"  styleClass="GrayButton"  title="Detalhes" >  
+                                        <p:ajax event="dialogReturn" listener="#{tituloCtr.onPrincipaBuscaReturn}" update="frmDevedorCredor frmTitulo frmParcela"  /> 
+                                    </p:commandButton>  
+                                    <p:outputLabel for="CPF" value="CPF/CNPJ:" styleClass="fonteOutputText"  />
+                                    <p:inputText id="CPF" value="#{tituloCtr.cpfDevedor}"/>
+
+                                </h:panelGrid>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="false">
+                                <h:panelGrid columns="2" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="nomeCredor" value="Credor:" styleClass="fonteOutputText"  />
+                                    <p:selectOneMenu id="nomeCredor"  style="width:150px" /> 
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                    </h:form>
+
+                </div>
+            </div>
+            <div class="Container100 ui-fluid">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Títulos</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmTitulo">
+                        <p:growl id="growl" showDetail="true"   />  
+                        <p:dataTable id="disc" 
+                                     var="titulo" 
+                                     value="#{tituloCtr.cobrancatb01TituloColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{titulo.codigoTitulo}"
+                                     paginator="false" 
+                                     emptyMessage="Sem títulos cadastrados" 
+                                     styleClass="ui-datatable"
+                                     rendered="#{tituloCtr.cobrancatb01TituloColl.size() > 0}"
+                                     >
+                            <p:ajax event="rowSelect"  listener="#{tituloCtr.onRowTituloPrincipalSelect}" update="frmParcela" />
+
+                            <p:column headerText="Credor" style="text-align: left; width: 25%" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{titulo.empresatb02PessoaCredor.nome}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Devedor" style="text-align: left; width: 25%" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{titulo.empresatb02PessoaDevedor.nome}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Dt. Emissão" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{titulo.dataEmissao}" styleClass="tabelaConteudo">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Valor" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{titulo.valorTitulo}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Situação" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{titulo.geraltb01SituacaoFinanceira.descricao}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Tipo" style="text-align: left; width: 10% " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{titulo.cobrancatb03TituloTipo.descricao}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+                            <p:column   style="text-align: center; width: 10% " styleClass="tabelaTitulo" >     
+                                <p:link value="Detalhes" outcome="tituloCadastro"  style="font-style: italic; " >
+                                    <f:param name="CodgTitulo" value="#{titulo.codigoTitulo}"/> 
+                                </p:link>
+                            </p:column> 
+
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+            <div class="Container100 ui-fluid">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Parcelas</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmParcela">
+                        <p:growl id="growl" showDetail="true"   />  
+                        <p:dataTable id="parcelas" 
+                                     var="parcela" 
+                                     value="#{tituloCtr.cobrancatb02TituloParcelaColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{parcela.codigoTituloParcela}"
+                                     paginator="false" 
+                                     emptyMessage="Sem parcelas cadastradas" 
+                                     styleClass="ui-datatable"
+                                     rendered="#{tituloCtr.cobrancatb02TituloParcelaColl.size() > 0}"
+                                     >
+                            <p:column headerText="Data vencimento" style="text-align: left; " styleClass="tabelaTitulo" >    
+                                <h:outputText  value="#{parcela.dataVencimento}" styleClass="tabelaConteudo">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Valor débito" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{parcela.valorParcela}" styleClass="tabelaConteudo">
+                                    <f:convertNumber type="currency" currencySymbol="R$" />
+                                </h:outputText>
+                            </p:column> 
+
+
+                            <p:column headerText="Nr. Parcela" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{parcela.numeroParcela}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Situação" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{parcela.geraltb01SituacaoFinanceira.descricao}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Dias em atraso" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{parcela.diasEmAtraso}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+
+
+            <p:commandButton value="OK" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-power-off Fs14 White" />
+        </p:dialog> 
+    </ui:define>
+</ui:composition>

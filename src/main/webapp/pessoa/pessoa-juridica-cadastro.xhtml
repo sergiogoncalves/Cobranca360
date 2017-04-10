@@ -1,0 +1,240 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="Wid60 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Gerenciamento de pessoa jurídica" outcome="pessoaJuridicaPrincipal"  />
+                    <p:menuitem value="Cadastrar/Alterar"   outcome="pessoaJuridicaCadastro" />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid60 MarAuto WidAutoOnMobile">
+            <div class="SeparatorFull"></div>
+            <h:form>
+                <p:button value="Voltar" outcome="pessoaJuridicaPrincipal"  icon="fa fa-chevron-left Fs16 White"  styleClass="RedButton" />
+                <p:commandButton value="Salvar" onclick="rc()" icon="fa fa-database Fs16 White"  styleClass="GreenButton" />
+                <p:commandButton value="Limpar formulário"  icon="fa fa-trash-o Fs16 White" action="#{empresaCtr.resetForm}"  styleClass="OrangeButton" />
+            </h:form>
+            <div class="SeparatorFull"></div>
+
+            <h1 class="CardBigTopic TexAlLeft">Gerenciamento de pessoa jurídica</h1>
+            <div class="Separator"></div>
+
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <p:tabView id="dados" styleClass="ShadowEffect">
+
+                <p:tab title="Dados">
+                    <h:form id="frmEmpresa" acceptcharset="ISO-8859-1">
+
+
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank">
+                            <p:outputLabel for="nome" value="Nome" />
+                            <p:inputText id="nome" required="true" requiredMessage="Nome  obrigatório" value="#{pessoaCtr.empresatb02Pessoa.nome}"/>
+
+                            <p:outputLabel for="cpf"  value="CPF" />
+                            <p:inputMask id="cpf" mask="999.999.999-99" validator="cpfValidator" converter="removerMascaraIntegerConverter" required="true" requiredMessage="CPF obrigatório" value="#{pessoaCtr.empresatb03PessoaFisica.docFederal}" />
+
+                            <p:outputLabel for="rg"  value="RG" />
+                            <p:inputText id="rg"  value="#{pessoaCtr.empresatb03PessoaFisica.rg}"/>
+
+                            <p:outputLabel for="rgOrgao"  value="Órgão emissor" />
+                            <p:inputText id="rgOrgao"  value="#{pessoaCtr.empresatb03PessoaFisica.rgOrgaoEmissor}"/>
+
+                            <p:outputLabel for="rgDataEmissao"  value="Data Emissão" />
+                            <p:calendar id="rgDataEmissao" mask="99/99/9999" locale="pt_BR" pattern="dd/MM/yyyy"  value="#{pessoaCtr.empresatb03PessoaFisica.dataNascimento}"/>
+
+                            <p:outputLabel for="rgUF"  value="UF" />
+                            <p:inputText id="rgUF"  value="#{pessoaCtr.empresatb03PessoaFisica.rgUf}"/>
+
+                            <p:outputLabel for="dtNasc"  value="Data Nascimento" />
+                            <p:calendar id="dtNasc" showOn="button" mask="99/99/9999" locale="pt_BR" pattern="dd/MM/yyyy"  value="#{pessoaCtr.empresatb03PessoaFisica.dataNascimento}" />
+
+                            <p:outputLabel for="np"  value="Nome do pai" />
+                            <p:inputText id="np"  value="#{pessoaCtr.empresatb03PessoaFisica.nomePai}"/>
+
+                            <p:outputLabel for="nm"  value="Nome da mãe" />
+                            <p:inputText id="nm"  value="#{pessoaCtr.empresatb03PessoaFisica.nomeMae}"/>         
+
+                            <p:outputLabel for="nc"  value="Nome do conjuge" />
+                            <p:inputText id="nc"  value="#{pessoaCtr.empresatb03PessoaFisica.nomeConjuge}"/>  
+
+
+                        </p:panelGrid>
+
+                        <p:remoteCommand name="rc" update="frmEmpresa" action="#{pessoaCtr.sal}" />
+                        
+                        <p:dialog header="Salvar" widgetVar="dlgGravar" modal="true" responsive="true" resizable="false">
+                            <h:outputText value="Deseja realmente salvar os dados?" />
+                            <br/>
+                            <br/>
+                            <div class="SeparatorFull"></div>
+
+                            <p:commandButton  action="#{empresaCtr.salvarEmpresa}" ajax="false" value="Salvar"   styleClass="GreenButton" icon="fa fa-check-circle Fs16 White" />
+
+                            <p:commandButton  ajax="true" immediate="true" value="Cancelar"  oncomplete="PF('dlgGravar').hide();" styleClass="RedButton" icon="fa fa-minus-circle Fs16 White" />
+                        </p:dialog> 
+
+                    </h:form>  
+                </p:tab>
+
+                <p:tab title="Endereço" >
+                    <h:form id="frmEndereco" acceptcharset="ISO-8859-1">
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank">
+                            <p:outputLabel for="endereco"  value="Endereço" />
+                            <p:inputText  id="endereco" required="true" value="#{pessoaCtr.empresatb05PessoaEndereco.endereco}" validatorMessage="Endereço obrigatório"/>  
+
+                            <p:outputLabel for="complemento"  value="Complemento" />
+                            <p:inputText id="complemento"  value="#{pessoaCtr.empresatb05PessoaEndereco.complemento}" />  
+
+                            <p:outputLabel for="cidade"  value="Cidade" />
+                            <p:inputText id="cidade"  value="#{pessoaCtr.empresatb05PessoaEndereco.cidade}" />  
+
+                            <p:outputLabel for="bairro"  value="Bairro" />
+                            <p:inputText id="bairro"  value="#{pessoaCtr.empresatb05PessoaEndereco.bairro}" />  
+
+                            <p:outputLabel for="cep"  value="Cep" />
+                            <p:inputText id="cep"  value="#{pessoaCtr.empresatb05PessoaEndereco.cep}" />  
+
+                            <p:outputLabel for="numero"  value="Número" />
+                            <p:inputText id="numero"  value="#{pessoaCtr.empresatb05PessoaEndereco.numero}" />  
+
+                            <p:outputLabel for="estado"  value="Estado" />
+                            <p:inputText id="estado"  value="#{pessoaCtr.empresatb05PessoaEndereco.estado}" />
+
+                        </p:panelGrid>  
+                        <br/>
+                        <p:outputLabel for="endPrinc"  value="Principal: " />
+                        <p:selectBooleanCheckbox id="endPrinc" value="#{pessoaCtr.empresatb05PessoaEndereco.flgPrincipal}" />
+                        <br/>
+                        <br/>
+
+                        <br/>
+                        <p:commandButton value="Adicionar" action="#{pessoaCtr.salvarEnderecos}" update="frmEndereco"  icon="fa fa-arrow-down Fs16 White" style="font-size:1.4em"  styleClass="GreenButton" />
+
+                        <div class="SeparatorFull"></div>
+                        <h2 class="CardBigTopic TexAlLeft">Endereços cadastrados</h2>
+                        <div class="SeparatorFull"></div>
+
+                        <p:dataTable id="disc" 
+                                     var="endereco" 
+                                     value="#{pessoaCtr.empresatb05PessoaEnderecoColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{endereco.codigoPessoaEndereco}"
+                                     paginator="false" 
+                                     emptyMessage="Sem endereços adicionados" 
+                                     styleClass="ui-datatable"
+
+                                     >
+                            <p:column  style="text-align: left; width: 13%; align-content: center; align-items: center ">    
+                                <p:button   icon="fa fa-edit Fs12 White" style="font-size:80%"  title="Detalhes" styleClass="AquaButton " />     
+
+                                <p:button   icon="fa fa-minus-circle Fs12 White" styleClass="fa-2x  RedButton" title="Detalhes" />     
+
+                            </p:column > 
+
+                            <p:column headerText="Descrição" style="text-align: left; " styleClass="tabelaTitulo"  >     
+                                <h:outputText value="#{endereco.endereco}" styleClass="tabelaConteudo" />
+                            </p:column>  
+
+                            <p:column headerText="Principal" style="text-align: left; width: 8%; " styleClass="tabelaTitulo"  >     
+                                <p:selectBooleanCheckbox  value="#{endereco.flgPrincipal}"  styleClass="tabelaConteudoCentro" />
+                            </p:column>  
+                        </p:dataTable>  
+                    </h:form>
+                </p:tab>
+
+                <p:tab title="Contato" >
+                    <h:form id="frmContato" acceptcharset="ISO-8859-1">
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank">
+                            <p:outputLabel for="console" value="Tipo contato" />
+                            <p:selectOneMenu id="console" value="#{pessoaCtr.empresatb06PessoaContatoEscolhido.geraltb02TipoContato}" required="true" effect="fold" converter="tipoContatoConverter"   >
+                                <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"  />
+                                <f:selectItems value="#{pessoaCtr.geraltb02TipoContato}" var="tipo" itemLabel="#{tipo.descricao}" itemValue="#{tipo}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="desc"  value="Descrição" />
+                            <p:inputText id="desc" required="true" value="#{pessoaCtr.empresatb06PessoaContatoEscolhido.descricao}" validatorMessage="Descrição obrigatória"/>  
+
+                        </p:panelGrid>
+
+
+                        <p:outputLabel for="princi"  value="Principal" /> <h:outputLabel value=":    " />
+                        <p:selectBooleanCheckbox id="princi" value="#{pessoaCtr.empresatb06PessoaContatoEscolhido.principal}" />
+                        <br/>
+                        <br/>
+
+                        <p:commandButton value="Adicionar" action="#{pessoaCtr.salvarContatos}" update="frmContato"  icon="fa fa-arrow-down Fs16 White" style="font-size:1.4em"  styleClass="GreenButton" />
+
+                        <div class="SeparatorFull"></div>
+                        <h2 class="CardBigTopic TexAlLeft">Contatos cadastrados</h2>
+                        <div class="SeparatorFull"></div>
+
+                        <p:dataTable id="disc" 
+                                     var="contato" 
+                                     value="#{pessoaCtr.empresatb06PessoaContatoColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{contato.codigoPessoaContato}"
+                                     paginator="false" 
+                                     emptyMessage="Sem contatos adicionados" 
+                                     styleClass="ui-datatable"
+
+                                     >
+                            <p:column  style="text-align: left; width: 13%; align-content: center; align-items: center ">    
+                                <p:button   icon="fa fa-refresh Fs12 White" style="font-size:80%"  title="Detalhes" styleClass="AquaButton " />     
+
+                                <p:button   icon="fa fa-minus-circle Fs12 White" styleClass="fa-2x  RedButton" title="Detalhes" />     
+
+                            </p:column > 
+
+                            <p:column headerText="Tipo" style="width: 15%; text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText   value="#{contato.geraltb02TipoContato.descricao}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Descrição" style="text-align: left; " styleClass="tabelaTitulo"  >     
+                                <h:outputText value="#{contato.descricao}" styleClass="tabelaConteudo" />
+                            </p:column>  
+
+
+                            <p:column headerText="Principal" style="text-align: left; width: 8%; " styleClass="tabelaTitulo"  >     
+                                <p:selectBooleanCheckbox  value="#{contato.principal}"  styleClass="tabelaConteudoCentro" />
+                            </p:column>  
+                        </p:dataTable>                        
+
+
+
+                    </h:form>
+                </p:tab>
+
+            </p:tabView>
+        </div>
+
+
+
+
+
+
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+            <p:commandButton value="Novo" action="#{empresaCtr.resetForm}" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-plus-circle Fs14 White" />
+            <p:button value="Listar" outcome="empresa" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no OrangeButton" icon="ui-icon-close fa fa-list-ol Fs14 White" />
+        </p:dialog> 
+
+
+    </ui:define>
+
+</ui:composition>

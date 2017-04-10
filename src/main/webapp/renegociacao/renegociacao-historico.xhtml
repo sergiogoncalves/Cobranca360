@@ -1,0 +1,207 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+
+        <h:form id="formInicial">
+            <p:remoteCommand name="onload" action="#{renegociacaoHistoricoCtr.iniciar()}" autoRun="true" update="frmDevedorCredor" />
+        </h:form>
+
+        <div class="Wid70 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Histórico de negociações" outcome="pessoaFisicaPrincipal"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid70 MarAuto WidAutoOnMobile">
+
+            <div class="SeparatorFull"></div>
+
+            <div class="Container100 ">
+                <div class="Card ShadowEffect">
+
+                    <h1 class="CardBigTopic TexAlLeft">Filtros</h1>
+                    <div class="SeparatorFull"></div>
+
+                    <h:form id="frmDevedorCredor" acceptcharset="ISO-8859-1">
+
+                        <h:panelGrid columns="2" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="5" columnClasses="alignmentLeft">
+
+                                    <p:outputLabel for="dtPeriodoInicial" value="Período inicial:" styleClass="fonteOutputText"  />
+                                    <p:calendar id="dtPeriodoInicial" required="true" value="#{renegociacaoHistoricoCtr.dataInicial}" styleClass="calandarios"   maxlength="10"  pattern="dd/MM/yyyy" mask="true" locale="pt_BR" showOn="button"   /> 
+                                    <br/>
+                                    <p:outputLabel for="dtPeriodoFinal" value="Período Final:" styleClass="fonteOutputText"  />
+                                    <p:calendar id="dtPeriodoFinal" required="true" value="#{renegociacaoHistoricoCtr.dataFinal}" styleClass="calandarios"   maxlength="10"  pattern="dd/MM/yyyy" mask="true" locale="pt_BR" showOn="button"   /> 
+
+
+                                </h:panelGrid>
+                            </h:panelGroup>
+                            <h:panelGroup >
+                                <h:panelGrid columns="2" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="nomeAtendente" value="Atendente:" styleClass="fonteOutputText"  />
+                                    <p:selectOneMenu id="nomeAtendente" autoWidth="false" 
+                                                     value="#{renegociacaoHistoricoCtr.segurancatb01UsuarioEscolhido}"  style="width: 400px !important"  > 
+                                        <f:selectItem itemLabel="Escolher" />
+                                        <f:selectItems value="#{renegociacaoHistoricoCtr.segurancatb01UsuarioColl}" var="user"
+                                                       itemLabel="#{user.nomeUsuario}" itemValue="#{user}"/>
+
+
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <div class="SeparatorFull"></div>
+                        <p:commandButton value="Filtrar" action="#{renegociacaoHistoricoCtr.buscarRenegociacao()}"  update="frmRenegociacao"  icon="fa fa-filter  Fs16 White" styleClass="NavyButton" />
+                    </h:form>
+
+                </div>
+            </div>
+            <div class="Container100 ui-fluid">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Renegociação</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmRenegociacao">
+                        <p:growl id="growl" showDetail="true"   />  
+                        <p:dataTable id="disc" 
+                                     var="renegociacao" 
+                                     value="#{renegociacaoHistoricoCtr.renegociacaoColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{renegociacao.codigoRenegociacao}"
+                                     paginator="false" 
+                                     emptyMessage="Sem títulos cadastrados" 
+                                     styleClass="ui-datatable"
+                                     rendered="#{renegociacaoHistoricoCtr.renegociacaoColl.size() > 0}"
+                                     >
+
+
+                            <p:column headerText="Data" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{renegociacao.dataRenegociacao}" styleClass="tabelaConteudo">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Nr. Parcelas" style="text-align: left;" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{renegociacao.numeroParcelas}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Vlr. Negociado" style="text-align: left;" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{renegociacao.valorRenegociado}" styleClass="tabelaConteudo">
+                                    <f:convertNumber type="currency" currencySymbol="R$" />
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Vlr. Acordado" style="text-align: left;" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{renegociacao.valorAcordado}" styleClass="tabelaConteudo">
+                                    <f:convertNumber type="currency" currencySymbol="R$" />
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Vlr. Desconto" style="text-align: left;" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{renegociacao.valorDesconto}" styleClass="tabelaConteudo">
+                                    <f:convertNumber type="currency" currencySymbol="R$" />
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Vlr. Honorário" style="text-align: left;" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{renegociacao.valorHonorario}" styleClass="tabelaConteudo">
+                                    <f:convertNumber type="currency" currencySymbol="R$" />
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Vlr. Juros" style="text-align: left;" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{renegociacao.valorJuros}" styleClass="tabelaConteudo">
+                                    <f:convertNumber type="currency" currencySymbol="R$" />
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Vlr. Mora" style="text-align: left;" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{renegociacao.valorMora}" styleClass="tabelaConteudo">
+                                    <f:convertNumber type="currency" currencySymbol="R$" />
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Vlr. Multa" style="text-align: left;" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{renegociacao.valorMulta}" styleClass="tabelaConteudo">
+                                    <f:convertNumber type="currency" currencySymbol="R$" />
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Usuário" style="text-align: left;" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{renegociacao.segurancatb01Usuario.nomeUsuario}" styleClass="tabelaConteudo" />
+                            </p:column> 
+
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+            <div class="Container100 ui-fluid">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Parcelas</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmParcela">
+                        <p:growl id="growl" showDetail="true"   />  
+                        <p:dataTable id="parcelas" 
+                                     var="parcela" 
+                                     value="#{tituloCtr.cobrancatb02TituloParcelaColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{parcela.codigoTituloParcela}"
+                                     paginator="false" 
+                                     emptyMessage="Sem parcelas cadastradas" 
+                                     styleClass="ui-datatable"
+                                     rendered="#{tituloCtr.cobrancatb02TituloParcelaColl.size() > 0}"
+                                     >
+                            <p:column headerText="Data vencimento" style="text-align: left; " styleClass="tabelaTitulo" >    
+                                <h:outputText  value="#{parcela.dataVencimento}" styleClass="tabelaConteudo">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Valor débito" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{parcela.valorParcela}" styleClass="tabelaConteudo">
+                                    <f:convertNumber type="currency" currencySymbol="R$" />
+                                </h:outputText>
+                            </p:column> 
+
+
+                            <p:column headerText="Nr. Parcela" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{parcela.numeroParcela}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Situação" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{parcela.geraltb01SituacaoFinanceira.descricao}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Dias em atraso" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{parcela.diasEmAtraso}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+
+
+            <p:commandButton value="OK" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-power-off Fs14 White" />
+        </p:dialog> 
+    </ui:define>
+</ui:composition>

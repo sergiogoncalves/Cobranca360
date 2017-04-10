@@ -1,0 +1,109 @@
+<ui:composition 
+
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <!-- LAYOUT TOPBAR COVER -->
+    <ui:define name="head">
+        <style type="text/css">
+            .ui-menubar{background-color: #025185;  border-color:  #025185;}
+        </style>
+    </ui:define>
+
+    <div align="center">
+        <h:form id="frmMenuTopBar">
+            <p:sticky target="menuGeral" />
+            <!--<span class="ui-sticky"> 
+               <p:menubar id="menuGeral" style="text-align: center; background-color: menu;" class="ui-sticky"   model="#{menuCtr.menu}" >
+
+                   <f:facet name="options" >
+                       <span class="FontLatoBlack Fs14 black Opac80">Bem Vindo(a), #{usuarioSessaoCtr.segurancatb01Usuario.nomeUsuario} </span>
+                       <span class="FontLatoLight Fs12 Navy ">
+
+                           Acesso até o dia 
+                           <h:outputText value="#{usuarioSessaoCtr.segurancatb01Usuario.dataFim}" >
+                               <f:convertDateTime pattern="dd/MM/yyyy" />
+                           </h:outputText>.
+
+
+                       </span>
+
+                   </f:facet>
+
+               </p:menubar>
+           </span>-->
+
+            <p:menubar id="menuGeral" style="text-align: center"  >
+                <p:menuitem value="Empresa" icon="fa fa-bank Fs15 Blue" rendered="#{usuarioSessaoCtr.permissaoModulo('Empresa')}" outcome="empresa"  class="FontLatoBold Fs14 Black Opac80" />
+                <p:submenu label="Pessoa" icon="fa fa-bolt Fs15 Blue">
+                    <p:menuitem value="Pessoa Física" icon="fa fa-male Fs15 Navy" outcome="pessoaFisicaPrincipal"  class="FontLatoBold Fs14 Black Opac80" />
+                    <p:menuitem value="Pessoa Jurídica" icon="fa fa-users Fs15 Navy"  outcome="pessoaJuridicaPrincipal"  class="FontLatoBold Fs14 Black Opac80" />
+                </p:submenu>
+
+                <p:menuitem value="Titulo" icon="fa fa-stack-exchange Fs15 Blue" outcome="tituloPrincipal"  class="FontLatoBold Fs14 Black Opac80" />
+
+                <p:submenu label="Negociação" icon="fa fa-money Fs15 Blue">
+                    <p:menuitem value="Renegociar" icon="fa fa-calculator Fs15 Navy" outcome="renegociacaoPrincipal"  class="FontLatoBold Fs14 Black Opac80" />
+                    <p:menuitem value="Histórico" icon="fa fa-clipboard Fs15 Navy" outcome="renegociacaoHistorico"  class="FontLatoBold Fs14 Black Opac80" />
+                    <p:menuitem value="Tempo Real" icon="fa fa-video-camera Fs15 Navy" outcome="renegociacaoTempoReal"  class="FontLatoBold Fs14 Black Opac80" />
+                    <p:menuitem value="Fila de Cobrança" icon="fa fa-sort-numeric-asc Fs15 Navy" outcome="fila"  class="FontLatoBold Fs14 Black Opac80" />
+                </p:submenu>
+
+
+                <p:submenu label="Parâmetros" icon="fa fa-puzzle-piece Fs15 Blue">
+                    <p:menuitem value="Regras de Negociação" icon="fa fa-sliders Fs15 Navy" outcome="regrasRenegociacao"  class="FontLatoBold Fs14 Black Opac80" />
+                </p:submenu>
+
+                <p:submenu label="Segurança" icon="fa fa-user-secret Fs15 Blue">
+                    <p:menuitem value="Usuário" icon="fa fa-user-md Fs15 Navy" outcome="usuarioPrincipal"  class="FontLatoBold Fs14 Black Opac80" />
+                    <p:menuitem value="Processos" icon="fa fa-chain Fs15 Navy" outcome="usuarioProcesso"  class="FontLatoBold Fs14 Black Opac80" />
+                </p:submenu>
+
+                <p:submenu label="Administrativo" icon="fa fa-suitcase Fs15 Blue">
+                    <p:menuitem value="Processos Gerais" icon="fa fa-cogs Fs15 Navy" outcome="processosAdministrativo"  class="FontLatoBold Fs14 Black Opac80" />
+                </p:submenu>
+
+
+
+                <p:menuitem value="Sair" icon="fa fa-power-off Fs15 Red" onclick="PF('dlgSair').show();" />
+                <f:facet name="options" >
+                    <span class="FontLatoBlack Fs14 black Opac80">Bem Vindo(a), #{usuarioSessaoCtr.segurancatb01Usuario.nomeUsuario} </span>
+                    <span class="FontLatoLight Fs12 Navy ">
+
+                        Acesso até o dia 
+                        <h:outputText value="#{usuarioSessaoCtr.segurancatb01Usuario.dataFim}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>.
+
+
+                    </span>
+
+                </f:facet>
+
+
+            </p:menubar>
+
+        </h:form>
+    </div>
+
+
+    <h:form>
+
+
+        <p:dialog header="Sair do sistema!" widgetVar="dlgSair" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Deseja realmente sair do sistema?" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+            <p:commandButton value="Sim" ajax="false" action="#{usuarioSessaoCtr.sairSistema}" styleClass="ui-confirmdialog-yes GreenButton" icon="ui-icon-check fa fa-check Fs14 White" />
+            <p:commandButton value="Não" onclick="PF('dlgSair').hide();" styleClass="ui-confirmdialog-no RedButton" icon="ui-icon-close fa fa-close Fs14 White" />
+        </p:dialog>  
+
+    </h:form>
+
+
+
+</ui:composition>

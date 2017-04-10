@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+
+
+
+        <h:form id="formInicial">
+            <p:remoteCommand name="onload" action="#{renegociacaoHistoricoCtr.iniciar()}" autoRun="true" update="frmDevedorCredor" />
+        </h:form>
+
+        <div class="Wid70 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Fila de atendimento" outcome="fila"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid70 MarAuto WidAutoOnMobile">
+            <div class="SeparatorFull"></div>
+            <h:form>
+                <p:button value="Cadastrar fila" icon="fa fa-plus-circle  Fs16 White" outcome="filaManutencao"  styleClass="GreenButton" />
+            </h:form>
+            <div class="SeparatorFull"></div>
+
+
+            <div class="Container100 ">
+                <div class="Card ShadowEffect">
+
+                    <h1 class="CardBigTopic TexAlLeft">Filas de Atendimento - Filtros</h1>
+                    <div class="SeparatorFull"></div>
+
+                    <h:form id="frmDevedorCredor" acceptcharset="ISO-8859-1">
+                        <h:panelGrid columns="1" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="5" columnClasses="alignmentLeft">
+
+                                    <p:outputLabel for="dtPeriodoInicial" value="Data inicial de criação:" styleClass="fonteOutputText"  />
+                                    <p:calendar id="dtPeriodoInicial" required="true" value="#{filaCtr.dataInicio}" styleClass="calandarios"   maxlength="10"  pattern="dd/MM/yyyy" mask="true" locale="pt_BR" showOn="button"   /> 
+                                    <br/>
+                                    <p:outputLabel for="dtPeriodoFinal" value="Data Final de criação:" styleClass="fonteOutputText"  />
+                                    <p:calendar id="dtPeriodoFinal" required="true" value="#{filaCtr.dataFim}" styleClass="calandarios"   maxlength="10"  pattern="dd/MM/yyyy" mask="true" locale="pt_BR" showOn="button"   /> 
+
+
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                        </h:panelGrid>
+
+                        <div class="SeparatorFull"></div>
+
+
+                        <p:commandButton value="Filtrar" action="#{filaCtr.buscarFila}"  update="frmFilas"  icon="fa fa-filter  Fs16 White" styleClass="NavyButton" />
+                    </h:form>
+
+                </div>
+            </div>
+            <div class="Container100 ui-fluid">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Filas encontradas</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmFilas">
+                        <p:growl id="growl" showDetail="true"   />  
+                        <p:dataTable id="disc" 
+                                     var="fila" 
+                                     value="#{filaCtr.filaColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{fila.codigoFila}"
+                                     paginator="false" 
+                                     emptyMessage="Sem títulos cadastrados" 
+                                     styleClass="ui-datatable"
+                                     rendered="#{filaCtr.filaColl.size() > 0}"
+                                     >
+
+                            <p:column headerText="Ativo" style="text-align: center; width: 5% " styleClass="tabelaTitulo" > 
+                                <p:selectBooleanCheckbox styleClass="fonteOutputText" value="#{fila.ativo}"  style="text-align: center;" />
+                            </p:column>
+
+                            <p:column headerText="Descrição " style="text-align: left; " styleClass="tabelaTitulo" >  
+                                <h:outputText  value="#{fila.descricao}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Data Início" style="text-align: left;" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{fila.dataInicio}" styleClass="tabelaConteudo">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Data Fim" style="text-align: left;" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{fila.dataFim}" styleClass="tabelaConteudo">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column style="text-align: center; width: 10% " styleClass="tabelaTitulo" >     
+                                <p:link value="Detalhes" outcome="filaManutencao"  style="font-style: italic; " >
+                                    <f:param name="CodgFila" value="#{fila.codigoFila}"/> 
+                                </p:link>
+                            </p:column> 
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+
+        </div>
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+
+
+            <p:commandButton value="OK" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-power-off Fs14 White" />
+        </p:dialog> 
+    </ui:define>
+</ui:composition>

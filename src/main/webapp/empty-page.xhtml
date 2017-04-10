@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                xmlns:o="http://omnifaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="Wid60 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb rendered="false"  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Gerenciamento de disciplina"   />
+                    <p:menuitem value="Cadastrar/Alterar"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid60 MarAuto WidAutoOnMobile">
+            <div class="Card ShadowEffect TexAlCenter">
+                <span class="FontNormal Fs14 Black Opac80">Página em branco</span>
+            </div>
+            <div class="SeparatorFull"></div>
+            <h:form>
+
+                <p:commandButton value="Processar"  action="#{pessoaBean.inserirPessoa}"  styleClass="RedButton"/>
+                <p:commandButton value="Listar"  action="#{pessoaBean.inserirPessoa}"/>
+
+            </h:form>
+            <div class="SeparatorFull"></div>
+        </div>
+
+
+    </ui:define>
+
+</ui:composition>

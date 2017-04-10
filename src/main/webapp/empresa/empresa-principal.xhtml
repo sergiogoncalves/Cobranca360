@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="formInicial">
+            <p:remoteCommand name="onload" action="#{empresaCtr.buscarEmpresas()}" autoRun="true" update="frmEmpresas" />
+        </h:form>
+
+        <div class="Wid60 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Gerenciamento de empresa" outcome="empresa"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid70 MarAuto WidAutoOnMobile">
+            <div class="SeparatorFull"></div>
+            <h:form>
+                <p:button value="Cadastrar empresa" icon="fa fa-plus-circle  Fs16 White" outcome="empresaCadastro" styleClass="GreenButton" />
+            </h:form>
+            <div class="SeparatorFull"></div>
+
+
+            <div class="Container100 ui-fluid">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Empresas cadastradas</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmEmpresas">
+                        <p:dataTable id="disc" 
+                                     var="empresa" 
+                                     value="#{empresaCtr.empresatb01EmpresaColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{empresa.codigoEmpresa}"
+                                     paginator="false" 
+                                     emptyMessage="Sem empresas cadastradas" 
+                                     styleClass="ui-datatable"
+
+                                     >
+
+                            <p:column headerText="CNPJ" style="width: 20%; text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText converter="cnpjConverter"  value="#{empresa.cnpj}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Nome Fantasia" style="text-align: left; " styleClass="tabelaTitulo"  >     
+                                <h:outputText value="#{empresa.nomeFantasia}" styleClass="tabelaConteudo" />
+                            </p:column> 
+                            
+                            <p:column style="text-align: center; width: 10% " styleClass="tabelaTitulo" >     
+                                <p:link value="Detalhes" outcome="empresaCadastro"  style="font-style: italic; " >
+                                    <f:param name="CodgEmpresa" value="#{empresa.codigoEmpresa}"/> 
+                                </p:link>
+                            </p:column>                             
+                            
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+
+
+            <p:commandButton value="OK" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-power-off Fs14 White" />
+        </p:dialog> 
+    </ui:define>
+</ui:composition>

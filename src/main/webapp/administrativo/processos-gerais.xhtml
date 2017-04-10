@@ -1,0 +1,227 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="formInicial">
+            <p:remoteCommand name="onload" action="#{administrativoCtr.init}" autoRun="true" update="frmProcessos frmInsert" />
+        </h:form>
+
+        <div class="Wid70 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Gerenciamento de processos (Administrativo)" outcome="processosAdministrativo"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid70 MarAuto WidAutoOnMobile">
+
+            <div class="SeparatorFull"></div>
+            <h:form id="frmBotao">
+                <p:commandButton value="Salvar" immediate="true" onclick="SalvarMenu()" ajax="true" icon="fa fa-database Fs16 White"  styleClass="GreenButton" />
+
+                <p:commandButton value="Novo" action="#{administrativoCtr.novo}"  onstart="processosList.clearSelection();" update="frmBotao frmInsert" rendered="#{administrativoCtr.segurancatb02ProcessoAtual.codigoProcesso != 0}" ajax="true" icon="fa fa-database Fs16 White"  />
+            </h:form>
+            <div class="SeparatorFull"></div>
+
+            <div class="Container100 ">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Gerenciar processos</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmInsert" acceptcharset="ISO-8859-1">
+                        <h:panelGrid columns="5" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="Processo Pai" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:selectOneMenu id="nomeCredor" autoWidth="false" 
+                                                     value="#{administrativoCtr.segurancatb02ProcessoAtual.segurancatb02ProcessoPai}"  style="width: 400px !important"  > 
+                                        <f:selectItem itemLabel="Escolher" />
+                                        <f:selectItems value="#{administrativoCtr.processosPaiColl}" var="pai"
+                                                       itemLabel="#{pai.descricao}" itemValue="#{pai}"/>
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                            </h:panelGroup>  
+                        </h:panelGrid>
+                        <h:panelGrid columns="5" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="Descrição" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputText required="true" styleClass="fonteOutputText"  value="#{administrativoCtr.segurancatb02ProcessoAtual.descricao}"/>
+                                </h:panelGrid>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="Nome" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputText styleClass="fonteOutputText"  value="#{administrativoCtr.segurancatb02ProcessoAtual.nomeProcesso}"/>
+                                </h:panelGrid>
+                            </h:panelGroup>  
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="Ícone" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputText  styleClass="fonteOutputText"  value="#{administrativoCtr.segurancatb02ProcessoAtual.icone}"/>
+                                </h:panelGrid>
+                            </h:panelGroup>  
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="Url" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputText styleClass="fonteOutputText"  value="#{administrativoCtr.segurancatb02ProcessoAtual.url}"/>
+                                </h:panelGrid>
+                            </h:panelGroup>  
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="Flag Menu" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:selectBooleanCheckbox  value="#{administrativoCtr.segurancatb02ProcessoAtual.flagMenu}"  styleClass="tabelaConteudoCentro" />
+                                </h:panelGrid>
+                            </h:panelGroup>  
+
+
+
+
+                            <p:remoteCommand name="SalvarMenu" action="#{administrativoCtr.salvar}" update="frmProcessos frmBotao frmInsert"/>
+
+                        </h:panelGrid>
+                    </h:form>
+
+                </div>
+            </div>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <div class="Container100 ui-fluid">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Processos encontrados</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmProcessos">
+                        <p:growl id="growl" showDetail="true"   />  
+                        <p:dataTable id="disc" 
+                                     var="processo" 
+                                     value="#{administrativoCtr.segurancatb02ProcessoColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{processo.codigoProcesso}"
+                                     paginator="false" 
+                                     emptyMessage="Sem usuários cadastrados" 
+                                     styleClass="ui-datatable"
+                                     widgetVar="processosList"
+
+                                     >
+                            <p:ajax event="rowSelect"  listener="#{administrativoCtr.mudarProcesso}" update="frmInsert frmEmpresaProcesso frmBotao" />
+
+                            <p:column headerText="Codg." style="text-align: left; width: 8%; " styleClass="tabelaTitulo"  >     
+                                <h:outputText  value="#{processo.codigoProcesso}"  styleClass="tabelaConteudoCentro" />
+                            </p:column> 
+
+                            <p:column headerText="Descrição" style="text-align: left; " sortBy="#{processo.descricao}" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{processo.descricao}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+
+                            <p:column headerText="Nome" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{processo.nomeProcesso}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Icone" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{processo.icone}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Processo Pai" style="text-align: left; " sortBy="#{processo.segurancatb02ProcessoPai.descricao}" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{processo.segurancatb02ProcessoPai.descricao}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="URL" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{processo.url}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+
+                            <p:column headerText="Menu" style="text-align: left; width: 8%; " styleClass="tabelaTitulo"  >     
+                                <p:selectBooleanCheckbox  value="#{processo.flagMenu}"  styleClass="tabelaConteudoCentro" />
+                            </p:column> 
+
+
+
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+
+            <div class="Container100">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Empresas vinculadas ao processo</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmEmpresaProcesso">
+                        <p:growl id="growl" showDetail="true"   />  
+                        <p:dataTable id="empresa" 
+                                     var="processoPai" 
+                                     value="#{administrativoCtr.processoEmpresasColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{processoPai.codigoProcesoEmpresa}"
+                                     paginator="false" 
+                                     emptyMessage="Sem empresas cadastradas" 
+                                     styleClass="ui-datatable"
+
+                                     >
+
+                            <p:column headerText="Nome da empresa" style="text-align: left; " sortBy="#{processo.descricao}" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{processoPai.empresatb01Empresa.nomeFantasia}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+                        </p:dataTable>
+
+                        <div class="SeparatorFull"></div>
+                        <p:commandButton value="Vincular empresa ao processo" action="#{administrativoCtr.abrirVinculoEmpresas}"  rendered="#{administrativoCtr.segurancatb02ProcessoAtual.codigoProcesso != 0}" ajax="true" icon="fa fa-arrow-circle-o-left Fs16 White"  />
+                    </h:form>
+                </div>
+            </div>
+
+        </div>
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+
+
+            <p:commandButton value="OK" onclick="PF('dlgResultado').hide();"  styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-power-off Fs14 White" />
+        </p:dialog> 
+
+        <p:dialog header="Vincular processo à empresa" widgetVar="dlgVinculo" modal="true" responsive="true" resizable="false">
+            <h:form id="frmVinculo">
+                <h:panelGrid columns="1" styleClass="ui-fluid ui-panelgrid-blank">
+                    <h:panelGroup>
+                        <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                            <p:selectOneMenu id="nomeCredor" 
+                                             value="#{administrativoCtr.segurancatb08ProcessoEmpresaGravar.empresatb01Empresa}"  style="width: 400px !important"  > 
+                                <f:selectItem itemLabel="Escolher" />
+                                <f:selectItems value="#{empresaCtr.empresatb01EmpresaColl}" var="empresa"
+                                               itemLabel="#{empresa.nomeFantasia}" itemValue="#{empresa}"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                    </h:panelGroup>
+
+                </h:panelGrid>
+                <div class="SeparatorFull"></div>
+
+
+                <p:commandButton value="Salvar" action="#{administrativoCtr.salvarEmpresaProcesso}" styleClass="GreenButton" icon="fa fa-database Fs14 White" />
+            </h:form>
+        </p:dialog> 
+    </ui:define>
+</ui:composition>

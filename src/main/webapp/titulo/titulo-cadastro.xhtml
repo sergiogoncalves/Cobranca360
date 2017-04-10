@@ -1,0 +1,260 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                xmlns:o="http://omnifaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+
+        <f:metadata >
+            <o:viewParam name="CodgTitulo" value="#{tituloCtr.cobrancatb01Titulo}"   />
+        </f:metadata>
+
+        <h:form id="formInicial">
+            <p:remoteCommand name="onload" action="#{tituloCtr.init}" autoRun="true" update="frmDados frmParcela" />
+        </h:form>
+
+
+        <div class="Wid70 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Gerenciamento de título" outcome="tituloPrincipal"  />
+                    <p:menuitem value="Cadastro de título" outcome="tituloCadastro"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid70 MarAuto WidAutoOnMobile">
+
+            <div class="SeparatorFull"></div>
+            <h:form>
+                <p:button value="Voltar" outcome="tituloPrincipal"  icon="fa fa-chevron-left Fs16 White"  styleClass="RedButton" />
+                <p:commandButton value="Salvar" onclick="PF('dlgGravar').show();" icon="fa fa-database Fs16 White"  styleClass="GreenButton" />
+            </h:form>
+            <div class="SeparatorFull"></div>
+
+            <div class="Container100 ">
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <div class="Card ShadowEffect">
+                    <h1 class="CardSmallTopic TexAlLeft">Dados do título</h1>
+                    <div class="SeparatorFull"></div>
+
+                    <h:form id="frmDados" acceptcharset="ISO-8859-1">
+
+                        <p:dialog header="Salvar" widgetVar="dlgGravar" modal="true" showHeader="false"  responsive="true" resizable="false">
+                            <h:outputText value="Deseja realmente salvar os dados?" />
+                            <br/>
+                            <br/>
+                            <div class="SeparatorFull"></div>
+
+                            <p:commandButton   value="Salvar" ajax="false" action="#{tituloCtr.gravarTitulo}" styleClass="GreenButton" icon="fa fa-check-circle Fs16 White" />
+
+                            <p:commandButton  ajax="true" immediate="true" value="Cancelar"  oncomplete="PF('dlgGravar').hide();" styleClass="RedButton" icon="fa fa-minus-circle Fs16 White" />
+                        </p:dialog> 
+
+                        <h:panelGrid columns="3" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="3" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="nomeCredor"  value="Credor:" styleClass="fonteOutputText" />
+                                    <p:inputText id="nomeCredor" value="#{tituloCtr.nomeCredor}" required="true" />
+                                    <p:commandButton  id="btnFiltrarCredor" immediate="true" icon="fa fa-search Fs6 Green" action="#{tituloCtr.abrirBuscaPessoa}"  styleClass="GrayButton"  title="Detalhes" >  
+                                        <p:ajax event="dialogReturn" listener="#{tituloCtr.onCredorBuscaReturn}" update="frmDados"  /> 
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="3" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="nome"  value="Devedor:" styleClass="fonteOutputText" />
+                                    <p:inputText id="nome" value="#{tituloCtr.nomeDevedor}" required="true" />
+                                    <p:commandButton  id="btnFiltrarDevedor" immediate="true" icon="fa fa-search Fs6 Green"  action="#{tituloCtr.abrirBuscaPessoa}" styleClass="GrayButton" title="Detalhes" >  
+                                        <p:ajax event="dialogReturn" listener="#{tituloCtr.onDevedorBuscaReturn}" update="frmDados"  /> 
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="2" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="cnpjCpf"  value="CPF/CNPJ :" styleClass="fonteOutputText" />
+                                    <p:inputText id="cnpjCpf" value="#{tituloCtr.cpfDevedor}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="4" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="dtEmissao"  value="Dt. Emissão:" styleClass="fonteOutputText" />
+                                    <p:calendar id="dtEmissao" value="#{tituloCtr.cobrancatb01Titulo.dataEmissao}" styleClass="calandarios"   maxlength="10"  pattern="dd/MM/yyyy" mask="true" locale="pt_BR" showOn="button"   /> 
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="dtVencimento"  value="Dt. Vencto:" styleClass="fonteOutputText" />
+                                    <p:calendar id="dtVencimento" required="true" requiredMessage="Data de vencimento obrigatória" value="#{tituloCtr.cobrancatb01Titulo.dataVencimento}" styleClass="calandarios" maxlength="10"  pattern="dd/MM/yyyy" mask="true" locale="pt_BR" showOn="button" /> 
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="vlrTotal"  value="Vlr Total:" styleClass="fonteOutputText" />
+                                    <p:inputNumber id="vlrTotal" value="#{tituloCtr.cobrancatb01Titulo.valorTitulo}" styleClass="campos" symbol="R$ " />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="nParcelas"  value="Nr. Parcelas:" styleClass="fonteOutputText" />
+                                    <p:spinner id="nParcelas" value="#{tituloCtr.cobrancatb01Titulo.numeroParcelas}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="nroContrato"  value="Nr. Contrato:" styleClass="fonteOutputText" />
+                                    <p:inputText id="nroContrato" value="#{tituloCtr.cobrancatb01Titulo.contrato}" styleClass="campos" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="txtIdent"  value="Identificação:" styleClass="fonteOutputText" />
+                                    <p:inputText id="txtIdent" value="#{tituloCtr.cobrancatb01Titulo.identificacao}"  styleClass="campos" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="txtTipoTitulo" value="Tipo Título:" styleClass="fonteOutputText"/>
+                                    <p:selectOneRadio id="txtTipoTitulo" required="True" requiredMessage="Tipo de título obrigatório" value="#{tituloCtr.cobrancatb01Titulo.cobrancatb03TituloTipo}" converter="cobrancatb03TituloTipoConverter" styleClass="fonteOutputText" >
+                                        <f:selectItems value="#{componentesCtr.cobrancatb03TituloTipoColl}" var="c" class="fonteOutputText" itemLabel="#{c.descricao}" itemValue="#{c}"/>
+                                    </p:selectOneRadio>
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                        </h:panelGrid>
+
+
+                    </h:form>
+                </div>
+            </div>
+
+
+            <div class="Container100 ">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardSmallTopic TexAlLeft">Dados da parcela</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmParcela">
+                        <p:dialog header="Atenção!" widgetVar="dlgExcluir" modal="true" responsive="true" resizable="false">
+                            <h:outputText value="Deseja realmente excluir esta parcela?" />
+                            <br/>
+                            <br/>
+                            <div class="SeparatorFull"></div>
+                            <p:commandButton value="Excluir" action="#{tituloCtr.excluirParcela}" onclick="PF('dlgResultado').hide();" update="frmParcela" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-plus-circle Fs14 White" />
+                            <p:button value="Cancelar"  onclick="PF('dlgExcluir').hide();" styleClass="ui-confirmdialog-no RedButton" icon="ui-icon-close fa fa-times Fs14 White" />
+                        </p:dialog> 
+                        <h:panelGrid columns="4" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="2" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="txtParcelaData"  value="Dt. Vencimento" styleClass="fonteOutputText" />
+                                    <p:calendar id="txtParcelaData" styleClass="calandarios" required="true"  pattern="dd/MM/yyyy" mask="true" locale="pt_BR" showOn="button" value="#{tituloCtr.cobrancatb02TituloParcela.dataVencimento}"  /> 
+
+                                    <p:outputLabel for="txtParcelaNr"  value="Nr. da Parcela" styleClass="fonteOutputText"/>
+                                    <p:spinner id="txtParcelaNr" value="#{tituloCtr.cobrancatb02TituloParcela.numeroParcela}" />
+
+                                    <p:outputLabel for="txtParcelaValor"  value="Vlr. da Parcela" styleClass="fonteOutputText" />
+                                    <p:inputNumber id="txtParcelaValor" required="true" styleClass="campos" symbol="R$ " value="#{tituloCtr.cobrancatb02TituloParcela.valorParcela}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="2" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="txtParcelaBanco"  value="Banco" styleClass="fonteOutputText" />
+                                    <p:inputText id="txtParcelaBanco" value="#{tituloCtr.cobrancatb05TituloParcelaCheque.banco}" /> 
+
+                                    <p:outputLabel for="txtAgencia"  value="Agência" styleClass="fonteOutputText" />
+                                    <p:inputText id="txtAgencia" value="#{tituloCtr.cobrancatb05TituloParcelaCheque.agencia}" /> 
+
+                                    <p:outputLabel for="txtConta"  value="Conta" styleClass="fonteOutputText" />
+                                    <p:inputText id="txtConta" value="#{tituloCtr.cobrancatb05TituloParcelaCheque.conta}" /> 
+
+                                    <p:outputLabel for="txtNumero"  value="Número" styleClass="fonteOutputText" />
+                                    <p:inputText id="txtNumero" value="#{tituloCtr.cobrancatb05TituloParcelaCheque.numeroCheque}" /> 
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="3" columnClasses="alignmentLeft">
+                                    <p:commandButton  icon="fa fa-arrow-down  Fs16 Green" action="#{tituloCtr.adicionarParcela}" onclick="PF('dtParcelas').unselectAllRows();" update="frmParcela"  styleClass="GrayButton" />
+                                    <p:commandButton immediate="true"  icon="fa fa-times  Fs16 Red" action="#{tituloCtr.beforeExcluirParcela}"   styleClass="GrayButton" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+
+                        <div class="SeparatorFull"></div>
+                        <h:panelGroup>
+                            <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                <p:dataTable id="disc" 
+                                             var="cheques"
+                                             widgetVar="dtParcelas"
+                                             selectionMode="single"  
+                                             paginator="false" 
+                                             emptyMessage="Sem parcelas cadastradas" 
+                                             styleClass="ui-datatable"
+                                             value="#{tituloCtr.cobrancatb02TituloParcelaCadastroColl}" 
+                                             rowKey="#{cheques.colunaAleatoria}"
+                                             >
+                                    <p:ajax event="rowSelect"  listener="#{tituloCtr.onRowSelect}" update="frmParcela" />
+
+                                    <p:column headerText="Nr. Parcela"  style="text-align: left; width: 5px;" styleClass="tabelaTitulo"  >     
+                                        <h:outputText styleClass="tabelaConteudo" value="#{cheques.numeroParcela}" />
+                                    </p:column>  
+
+                                    <p:column headerText="Dt. Venc." style="text-align: left; width: 30px; " styleClass="tabelaTitulo"  >     
+                                        <h:outputText styleClass="tabelaConteudo" value="#{cheques.dataVencimento}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </h:outputText>
+                                    </p:column>  
+
+                                    <p:column headerText="Situação"  style="text-align: left; width: 30px;" styleClass="tabelaTitulo"  >     
+                                        <h:outputText styleClass="tabelaConteudo" value="#{cheques.geraltb01SituacaoFinanceira.descricao}" />
+                                    </p:column>  
+
+                                    <p:column headerText="Valor"  style="text-align: left; width: 30px;" styleClass="tabelaTitulo"  >     
+                                        <h:outputText styleClass="tabelaConteudo"  value="#{cheques.valorParcela}">
+                                            <f:convertNumber type="currency" currencySymbol="R$" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </h:panelGrid>
+                        </h:panelGroup>
+
+
+
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+            <p:commandButton value="Novo" action="#{tituloCtr.limparForm}" onclick="PF('dlgResultado').hide();" update="frmDados frmParcela" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-plus-circle Fs14 White" />
+            <p:button value="Listar" outcome="tituloPrincipal" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no OrangeButton" icon="ui-icon-close fa fa-list-ol Fs14 White" />
+        </p:dialog> 
+
+    </ui:define>
+</ui:composition>

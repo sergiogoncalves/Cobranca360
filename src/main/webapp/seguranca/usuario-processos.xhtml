@@ -1,0 +1,151 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="formInicial">
+            <p:remoteCommand name="onload" action="#{segurancaUsuarioProcessoCtr.init}" update="frmProcessos" autoRun="true"  />
+        </h:form>
+
+        <div class="Wid70 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Gerenciamento de processos" outcome="usuarioProcesso"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid70 MarAuto WidAutoOnMobile">
+
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <div class="Container100 ui-fluid">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Processos cadastrados</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmProcessos">
+                        <p:growl id="growl" showDetail="true"   />  
+                        <p:dataTable id="disc" 
+                                     var="processo" 
+                                     value="#{segurancaUsuarioProcessoCtr.segurancatb08ProcessoEmpresas}" 
+                                     selectionMode="single"  
+                                     rowKey="#{processo.codigoProcesoEmpresa}"
+                                     paginator="false" 
+                                     emptyMessage="Sem usuários cadastrados" 
+                                     styleClass="ui-datatable"
+                                     widgetVar="processosList"
+
+                                     >
+                            <p:ajax event="rowSelect"  listener="#{segurancaUsuarioProcessoCtr.buscarUsuariosPorProcesso}" update="frmUsuario"/>
+
+                            <p:column headerText="Codg." style="text-align: left; width: 8%; " styleClass="tabelaTitulo"  >     
+                                <h:outputText  value="#{processo.segurancatb02Processo.codigoProcesso}"  styleClass="tabelaConteudoCentro" />
+                            </p:column> 
+
+                            <p:column headerText="Descrição" style="text-align: left; " sortBy="#{processo.segurancatb02Processo.descricao}" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{processo.segurancatb02Processo.descricao}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+
+                            <p:column headerText="Nome" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{processo.segurancatb02Processo.nomeProcesso}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Icone" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{processo.segurancatb02Processo.icone}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Processo Pai" style="text-align: left; " sortBy="#{processo.segurancatb02Processo.segurancatb02ProcessoPai.descricao}" styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{processo.segurancatb02Processo.segurancatb02ProcessoPai.descricao}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="URL" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{processo.segurancatb02Processo.url}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+
+                            <p:column headerText="Menu" style="text-align: left; width: 8%; " styleClass="tabelaTitulo"  >     
+                                <p:selectBooleanCheckbox  value="#{processo.segurancatb02Processo.flagMenu}"  styleClass="tabelaConteudoCentro" />
+                            </p:column> 
+
+
+
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+
+            <div class="Container100">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Usuários vinculados ao processo</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmUsuario">
+                        <p:growl id="growl" showDetail="true"   />  
+                        <p:dataTable id="disc" 
+                                     var="usuario" 
+                                     value="#{segurancaUsuarioProcessoCtr.segurancatb06UsuarioProcessos}" 
+                                     selectionMode="single"  
+                                     rowKey="#{usuario.codigoUsuarioProcesso}"
+                                     paginator="false" 
+                                     emptyMessage="Sem usuários cadastrados" 
+                                     styleClass="ui-datatable"
+
+                                     >
+                            <p:column headerText="Nome" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{usuario.segurancatb01Usuario.nomeUsuario}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+
+                            <p:column headerText="Login" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{usuario.segurancatb01Usuario.login}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                        </p:dataTable>
+                        <div class="SeparatorFull"></div>
+                        <p:commandButton value="Vincular usuário ao processo" action="#{segurancaUsuarioProcessoCtr.iniciarVinculo}"  rendered="#{segurancaUsuarioProcessoCtr.segurancatb08ProcessoEmpresaEscolhido.codigoProcesoEmpresa != 0}" ajax="true" icon="fa fa-arrow-circle-o-left Fs16 White"  />
+
+                    </h:form>
+                </div>
+            </div>
+
+        </div>
+
+        <p:dialog header="Vincular usuário ao processo" widgetVar="dlgVinculo" modal="true" responsive="true" resizable="false">
+            <h:form id="frmVinculo">
+                <h:panelGrid columns="1" styleClass="ui-fluid ui-panelgrid-blank">
+                    <h:panelGroup>
+                        <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                            <p:selectOneMenu id="nomeCredor" 
+                                             value="#{segurancaUsuarioProcessoCtr.segurancatb06UsuarioProcessoVinculo.segurancatb01Usuario}"  style="width: 400px !important"  > 
+                                <f:selectItem itemLabel="Escolher" />
+                                <f:selectItems value="#{segurancaUsuarioProcessoCtr.segurancatb01Usuarios}" var="usuario"
+                                               itemLabel="#{usuario.nomeUsuario}" itemValue="#{usuario}"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                    </h:panelGroup>
+
+                </h:panelGrid>
+                <div class="SeparatorFull"></div>
+
+
+                <p:commandButton value="Salvar" action="#{segurancaUsuarioProcessoCtr.salvarVinculo}" styleClass="GreenButton" icon="fa fa-database Fs14 White" />
+            </h:form>
+        </p:dialog> 
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+
+
+            <p:commandButton value="OK" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-power-off Fs14 White" />
+        </p:dialog> 
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,95 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="Wid60 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Gerenciamento de pessoa jurídica" outcome="pessoaJuridicaPrincipal"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid60 MarAuto WidAutoOnMobile">
+            <div class="SeparatorFull"></div>
+            <h:form>
+                <p:button value="Cadastrar pessoa jurídica" icon="fa fa-plus-circle  Fs16 White" outcome="pessoaJuridicaCadastro" styleClass="GreenButton" />
+            </h:form>
+            <div class="SeparatorFull"></div>
+            <div class="Container100 ">
+                <div class="Card ShadowEffect">
+                   <h1 class="CardBigTopic TexAlLeft">Filtros</h1>
+                    <div class="SeparatorFull"></div>
+                                        <h:form id="frmBusca" acceptcharset="ISO-8859-1">
+                        <h:panelGrid columns="1" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="6" columnClasses="alignmentLeft">
+
+                                    <p:outputLabel for="nome" value="Nome:" />
+                                    <p:inputText id="nome"  value="#{pessoaCtr.empresatb03PessoaFisicaPesquisa.empresatb02Pessoa.nome}"/>
+
+                                    <p:outputLabel for="cpf" value="CPF:" />
+                                    <p:inputText id="cpf" value="#{pessoaCtr.empresatb03PessoaFisicaPesquisa.docFederal}"/>
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+
+                        <div class="SeparatorFull"></div>
+                        <p:commandButton value="Filtrar" action="#{pessoaCtr.buscarPessoa}" update="frmEmpresas"  icon="fa fa-filter  Fs16 White" styleClass="NavyButton" />
+                    </h:form>
+                </div>
+            </div>
+            
+
+
+            <div class="Container100 ui-fluid">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Pessoas cadastradas</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmEmpresas">
+                        <p:dataTable id="disc" 
+                                     var="pessoa" 
+                                     value="#{pessoaCtr.empresatb03PessoaFisicaColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{pessoa.pessoaFisicaCodigo}"
+                                     paginator="false" 
+                                     emptyMessage="Sem pessoas cadastradas" 
+                                     styleClass="ui-datatable"
+
+                                     >
+                            <p:column style="width: 7%" >    
+                                <p:button  id="btnFiltrar" outcome="empresaCadastro"  icon="fa fa-edit Fs6 White"  title="Detalhes">     
+                                    <f:param name="CodgEmpresa" value="#{pessoa.pessoaFisicaCodigo}"/> 
+                                </p:button>
+                            </p:column > 
+
+                            <p:column headerText="Cnpj" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{pessoa.empresatb02Pessoa.nome}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+
+
+            <p:commandButton value="OK" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-power-off Fs14 White" />
+        </p:dialog> 
+    </ui:define>
+</ui:composition>

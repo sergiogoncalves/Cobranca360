@@ -1,0 +1,335 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:o="http://omnifaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+
+        <f:metadata >
+            <o:viewParam name="CodgPessoa" value="#{pessoaCtr.empresatb02Pessoa}"   />
+        </f:metadata>
+
+        <h:form id="formInicial">
+            <p:remoteCommand name="onload" action="#{pessoaCtr.iniciarCadastro}" autoRun="true" update="dados:frmContato dados:frmEmpresa" />
+        </h:form>
+
+        <div class="Wid70 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Gerenciamento de pessoa física" outcome="pessoaFisicaPrincipal"  />
+                    <p:menuitem value="Cadastrar/Alterar"   outcome="pessoaFisicaCadastro" />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid70 MarAuto WidAutoOnMobile">
+            <p:growl id="growl" showDetail="true"  autoUpdate="true"  />  
+            <div class="SeparatorFull"></div>
+            <h:form>
+                <p:button value="Voltar" outcome="pessoaFisicaPrincipal"  icon="fa fa-chevron-left Fs16 White"  styleClass="RedButton" />
+                <p:commandButton value="Salvar2" rendered="false" onclick="PF('dlgGravar').show();" icon="fa fa-database Fs16 White"  styleClass="GreenButton" />
+                <p:commandButton value="Salvar" immediate="true" onclick="SalvarPessoa()" ajax="true" icon="fa fa-database Fs16 White"  styleClass="GreenButton" />
+                <p:commandButton value="Limpar formulário"  icon="fa fa-trash-o Fs16 White" action="#{empresaCtr.resetForm}"  styleClass="OrangeButton" />
+            </h:form>
+            <div class="SeparatorFull"></div>
+
+
+            <h1 class="CardBigTopic TexAlLeft">Gerenciamento de pessoa física</h1>
+            <div class="Separator"></div>
+
+            <p:tabView id="dados" styleClass="ShadowEffect">
+
+                <p:tab title="Dados">
+                    <h:form id="frmEmpresa" acceptcharset="ISO-8859-1">
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank">
+                            <p:outputLabel styleClass="fonteOutputText" for="nome" value="Nome" />
+                            <p:inputText id="nome" required="true" requiredMessage="Nome  obrigatório" value="#{pessoaCtr.empresatb02Pessoa.nome}"/>
+
+                            <p:outputLabel styleClass="fonteOutputText" for="cpf"  value="CPF" />
+                            <p:inputMask id="cpf" mask="999.999.999-99" readonly="#{pessoaCtr.empresatb02Pessoa.pessoaCodigo != 0}" validator="cpfValidator" converter="removerMascaraIntegerConverter" required="true" requiredMessage="CPF obrigatório" value="#{pessoaCtr.empresatb03PessoaFisica.docFederal}" />
+
+                            <p:outputLabel styleClass="fonteOutputText" for="rg"  value="RG" />
+                            <p:inputText id="rg"  value="#{pessoaCtr.empresatb03PessoaFisica.rg}"/>
+
+                            <p:outputLabel styleClass="fonteOutputText" for="rgOrgao"  value="Órgão emissor" />
+                            <p:inputText id="rgOrgao"  value="#{pessoaCtr.empresatb03PessoaFisica.rgOrgaoEmissor}"/>
+
+                            <p:outputLabel styleClass="fonteOutputText" for="rgDataEmissao"  value="Data Emissão" />
+                            <p:calendar id="rgDataEmissao" mask="99/99/9999" locale="pt_BR" pattern="dd/MM/yyyy"  value="#{pessoaCtr.empresatb03PessoaFisica.dataNascimento}"/>
+
+                            <p:outputLabel styleClass="fonteOutputText" for="rgUF"  value="UF" />
+                            <p:inputText id="rgUF"  value="#{pessoaCtr.empresatb03PessoaFisica.rgUf}"/>
+
+                            <p:outputLabel styleClass="fonteOutputText" for="dtNasc"  value="Data Nascimento" />
+                            <p:calendar id="dtNasc" showOn="button" mask="99/99/9999" locale="pt_BR" pattern="dd/MM/yyyy"  value="#{pessoaCtr.empresatb03PessoaFisica.dataNascimento}" />
+
+                            <p:outputLabel styleClass="fonteOutputText" for="np"  value="Nome do pai" />
+                            <p:inputText id="np"  value="#{pessoaCtr.empresatb03PessoaFisica.nomePai}"/>
+
+                            <p:outputLabel styleClass="fonteOutputText" for="nm"  value="Nome da mãe" />
+                            <p:inputText id="nm"  value="#{pessoaCtr.empresatb03PessoaFisica.nomeMae}"/>         
+
+                            <p:outputLabel styleClass="fonteOutputText" for="nc"  value="Nome do conjuge" />
+                            <p:inputText id="nc"  value="#{pessoaCtr.empresatb03PessoaFisica.nomeConjuge}"/>  
+
+
+                        </p:panelGrid>
+
+
+                        <p:remoteCommand name="SalvarPessoa" action="#{pessoaCtr.salvarPessoa}"/>
+
+                    </h:form> 
+
+                </p:tab>
+
+                <p:tab title="Responsável/Avalista">
+                    <h:form id="frmResponsavel" acceptcharset="ISO-8859-1">
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                            <p:commandButton value="Buscar responsável"  update="frmResponsavel" action="#{pessoaCtr.abrirBuscaPessoa}"  icon="fa fa-arrow-down Fs16 White ShadowEffect" style="font-size:1.4em"  styleClass="AquaButton" >
+                            </p:commandButton>
+                        </p:panelGrid>
+                        <br/>
+                        <br/>
+                        <h4 class="CardSmallTopic TexAlLeft">Responsáveis/Avalistas cadastrados</h4>
+                        <div class="SeparatorFull"></div>
+                        <p:dataTable id="disc" 
+                                     var="pessoa" 
+                                     value="#{pessoaCtr.empresatb02PessoaColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{pessoa.pessoaCodigo}"
+                                     paginator="false" 
+                                     emptyMessage="Sem endereços adicionados" 
+                                     styleClass="ui-datatable"
+
+                                     >
+                            <p:column  style="text-align: left; width: 13%; align-content: center; align-items: center ">    
+                                <p:button   icon="fa fa-edit Fs12 White" style="font-size:80%"  title="Detalhes" styleClass="AquaButton " />     
+                                <p:button   icon="fa fa-minus-circle Fs12 White" styleClass="fa-2x  RedButton" title="Detalhes" />     
+                            </p:column > 
+
+                            <p:column headerText="Descrição" style="text-align: left; " styleClass="tabelaTitulo"  >     
+                                <h:outputText value="#{pessoa.nome}" styleClass="tabelaConteudo" />
+                            </p:column>  
+                        </p:dataTable> 
+
+                    </h:form>  
+                </p:tab>
+
+                <p:tab title="Endereço">
+                    <h:form id="frmEndereco" acceptcharset="ISO-8859-1">
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank">
+                            <p:outputLabel styleClass="fonteOutputText" for="endereco"  value="Endereço" />
+                            <p:inputText  id="endereco" required="true" value="#{pessoaCtr.empresatb05PessoaEndereco.endereco}" validatorMessage="Endereço obrigatório"/>  
+
+                            <p:outputLabel styleClass="fonteOutputText" for="complemento"  value="Complemento" />
+                            <p:inputText id="complemento"  value="#{pessoaCtr.empresatb05PessoaEndereco.complemento}" />  
+
+                            <p:outputLabel styleClass="fonteOutputText" for="cidade"  value="Cidade" />
+                            <p:inputText id="cidade"  value="#{pessoaCtr.empresatb05PessoaEndereco.cidade}" />  
+
+                            <p:outputLabel styleClass="fonteOutputText" for="bairro"  value="Bairro" />
+                            <p:inputText id="bairro"  value="#{pessoaCtr.empresatb05PessoaEndereco.bairro}" />  
+
+                            <p:outputLabel styleClass="fonteOutputText" for="cep"  value="Cep" />
+                            <p:inputText id="cep"  value="#{pessoaCtr.empresatb05PessoaEndereco.cep}" />  
+
+                            <p:outputLabel styleClass="fonteOutputText" for="numero"  value="Número" />
+                            <p:inputText id="numero"  value="#{pessoaCtr.empresatb05PessoaEndereco.numero}" />  
+
+                            <p:outputLabel styleClass="fonteOutputText" for="estado"  value="Estado" />
+                            <p:inputText id="estado"  value="#{pessoaCtr.empresatb05PessoaEndereco.estado}" />
+
+                        </p:panelGrid>  
+                        <br/>
+                        <p:outputLabel styleClass="fonteOutputText" for="endPrinc"  value="Principal: " />
+                        <p:selectBooleanCheckbox id="endPrinc" value="#{pessoaCtr.empresatb05PessoaEndereco.flgPrincipal}" />
+                        <br/>
+                        <br/>
+
+                        <br/>
+                        <p:commandButton value="Adicionar" action="#{pessoaCtr.salvarEnderecos}" update="frmEndereco"  icon="fa fa-arrow-down Fs16 White" style="font-size:1.4em"  styleClass="GreenButton" />
+
+                        <br/>
+                        <br/>
+                        <h2 class="CardSmallTopic TexAlLeft">Endereços cadastrados</h2>
+                        <div class="SeparatorFull"></div>
+
+                        <p:dataTable id="disc" 
+                                     var="endereco" 
+                                     value="#{pessoaCtr.empresatb05PessoaEnderecoColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{endereco.codigoPessoaEndereco}"
+                                     paginator="false" 
+                                     emptyMessage="Sem endereços adicionados" 
+                                     styleClass="ui-datatable"
+
+                                     >
+                            <p:column  style="text-align: left; width: 13%; align-content: center; align-items: center ">    
+                                <p:button   icon="fa fa-edit Fs12 White" style="font-size:80%"  title="Detalhes" styleClass="AquaButton " />     
+
+                                <p:button   icon="fa fa-minus-circle Fs12 White" styleClass="fa-2x  RedButton" title="Detalhes" />     
+
+                            </p:column > 
+
+                            <p:column headerText="Descrição" style="text-align: left; " styleClass="tabelaTitulo"  >     
+                                <h:outputText value="#{endereco.endereco}" styleClass="tabelaConteudo" />
+                            </p:column>  
+
+                            <p:column headerText="Principal" style="text-align: left; width: 8%; " styleClass="tabelaTitulo"  >     
+                                <p:selectBooleanCheckbox  value="#{endereco.flgPrincipal}"  styleClass="tabelaConteudoCentro" />
+                            </p:column>  
+                        </p:dataTable>  
+                    </h:form>
+                </p:tab>
+                <p:tab title="Contato">
+                    <h:form id="frmContato" acceptcharset="ISO-8859-1">
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank">
+                            <p:outputLabel styleClass="fonteOutputText" for="console" value="Tipo contato" />
+                            <p:selectOneMenu id="console" value="#{pessoaCtr.empresatb06PessoaContatoEscolhido.geraltb02TipoContato}" required="true"  converter="tipoContatoConverter"   >
+                                <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"  />
+                                <f:selectItems value="#{pessoaCtr.geraltb02TipoContato}" var="tipo" itemLabel="#{tipo.descricao}" itemValue="#{tipo}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel styleClass="fonteOutputText" for="desc"  value="Descrição" />
+                            <p:inputText id="desc" required="true" value="#{pessoaCtr.empresatb06PessoaContatoEscolhido.descricao}" validatorMessage="Descrição obrigatória"/>  
+
+                        </p:panelGrid>
+
+                        <p:selectBooleanCheckbox  id="princi" value="#{pessoaCtr.empresatb06PessoaContatoEscolhido.principal}"  >
+                            <p:ajax update="dados:frmContato" listener="#{pessoaCtr.mudarPrincipalContato}" />
+                        </p:selectBooleanCheckbox>
+                        
+                        <p:outputLabel styleClass="fonteOutputText" for="princi"  value="Principal : " /> 
+
+                        <br/>
+                        <br/>
+
+                        <p:commandButton value="Salvar" action="#{pessoaCtr.salvarContatos}" update="dados:frmContato" onclick="PF('dtContato').unselectAllRows();"  icon="fa fa-arrow-down Fs16 White" style="font-size:1.4em"  styleClass="GreenButton" />
+                        <p:commandButton value="Excluir" rendered="#{pessoaCtr.empresatb06PessoaContatoEscolhido.colunaAleatoria != 0}" immediate="true"  icon="fa fa-times  Fs16 White" action="#{pessoaCtr.beforeExcluirParcela}"   styleClass="RedButton" />
+
+                        <p:dialog header="Atenção!" widgetVar="dlgExcluirContato" modal="true" responsive="true" resizable="false">
+                            <h:outputText value="Deseja realmente excluir este contato?" />
+                            <br/>
+                            <br/>
+                            <div class="SeparatorFull"></div>
+                            <p:commandButton value="Excluir" action="#{pessoaCtr.excluirContato}" onclick="PF('dlgResultado').hide();" update="dados:frmContato" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-plus-circle Fs14 White" />
+                            <p:button value="Cancelar"  onclick="PF('dlgExcluirContato').hide();" styleClass="ui-confirmdialog-no RedButton" icon="ui-icon-close fa fa-times Fs14 White" />
+                        </p:dialog> 
+
+                        <br/>
+                        <br/>
+                        <h2 class="CardSmallTopic TexAlLeft">Contatos cadastrados</h2>
+                        <div class="SeparatorFull"></div>
+
+                        <p:dataTable id="disc" 
+                                     var="contato" 
+                                     value="#{pessoaCtr.empresatb06PessoaContatoColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{contato.colunaAleatoria}"
+                                     paginator="false" 
+                                     emptyMessage="Sem contatos adicionados" 
+                                     styleClass="ui-datatable"
+                                     widgetVar="dtContato"
+                                     >
+                            <p:ajax event="rowSelect"  listener="#{pessoaCtr.alterarContato}" update="dados:frmContato" />
+
+                            <p:column headerText="Tipo" style="width: 15%; text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText   value="#{contato.geraltb02TipoContato.descricao}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+                            <p:column headerText="Descrição" style="text-align: left; " styleClass="tabelaTitulo"  >     
+                                <h:outputText value="#{contato.descricao}" styleClass="tabelaConteudo" />
+                            </p:column>  
+
+
+                            <p:column headerText="Principal" style="text-align: left; width: 8%; " styleClass="tabelaTitulo"  >     
+                                <p:selectBooleanCheckbox  value="#{contato.principal}"  styleClass="tabelaConteudoCentro" />
+                            </p:column>  
+
+                        </p:dataTable>                        
+
+
+
+                    </h:form>
+                </p:tab>
+
+                <p:tab title="Regras de renegociação">
+                    <h:form id="frmRegras" >
+
+                        <h:panelGroup>
+                            <h:panelGrid columns="2" columnClasses="alignmentLeft">
+                                <p:selectBooleanCheckbox   >
+                                    <p:ajax update="frmRegras" listener="#{tituloCtr.mudarRegrasProprias}" />
+                                </p:selectBooleanCheckbox>
+                                <p:outputLabel  value="Título com regras próprias de renegociação" styleClass="fonteOutputText" />
+
+                            </h:panelGrid>
+                        </h:panelGroup>
+
+                        <h:panelGrid columns="4" styleClass="ui-fluid ui-panelgrid-blank" >
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="txtJuros"  value="Juros(+)" styleClass="fonteOutputText" />
+                                    <p:inputNumber id="txtJuros" symbol="%" symbolPosition="s" emptyValue="sign" disabled="#{tituloCtr.tituloRegrasProprias}"  />  
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="txtMulta"  value="Multa(+)" styleClass="fonteOutputText"/>
+                                    <p:inputNumber id="txtMulta" symbol="%" symbolPosition="s" emptyValue="sign" disabled="#{tituloCtr.tituloRegrasProprias}" />
+
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="txtMora"  value="Mora(+)" styleClass="fonteOutputText" />
+                                    <p:inputNumber id="txtMora" symbol="%" symbolPosition="s" emptyValue="sign" disabled="#{tituloCtr.tituloRegrasProprias}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="txtHonorario"  value="Honorário(+)" styleClass="fonteOutputText" />
+                                    <p:inputNumber id="txtHonorario" symbol="%" symbolPosition="s" emptyValue="sign" disabled="#{tituloCtr.tituloRegrasProprias}"/>
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                        </h:panelGrid>
+
+                    </h:form>
+                </p:tab>
+            </p:tabView>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+            <p:commandButton value="Novo" action="#{empresaCtr.resetForm}" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-plus-circle Fs14 White" />
+            <p:button value="Listar" outcome="pessoaFisicaPrincipal" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no OrangeButton" icon="ui-icon-close fa fa-list-ol Fs14 White" />
+        </p:dialog> 
+
+
+    </ui:define>
+
+</ui:composition>

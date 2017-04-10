@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                xmlns:o="http://omnifaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                >
+
+    <ui:define name="content">
+
+
+        <f:metadata >
+            <o:viewParam name="CodgEmpresa" value="#{empresaCtr.empresatb01Empresa}"   />
+        </f:metadata>
+
+
+        <div class="Wid70 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Gerenciamento de empresas" outcome="empresa"  />
+                    <p:menuitem value="Cadastrar/Alterar"   outcome="empresaCadastro" />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid70 MarAuto WidAutoOnMobile">
+            <div class="SeparatorFull"></div>
+            <h:form>
+                <p:button value="Voltar" outcome="empresa"  icon="fa fa-chevron-left Fs16 White"  styleClass="RedButton" />
+                <p:commandButton value="Salvar" onclick="PF('dlgGravar').show();" icon="fa fa-database Fs16 White"  styleClass="GreenButton" />
+                <p:commandButton value="Limpar formulário"  icon="fa fa-trash-o Fs16 White" action="#{empresaCtr.resetForm}" update="frmEmpresa" styleClass="OrangeButton" />
+            </h:form>
+            <div class="SeparatorFull"></div>
+
+        </div>
+        <div class="Wid70 MarAuto WidAutoOnMobile">
+
+
+
+            <h:form id="frmEmpresa" acceptcharset="ISO-8859-1">
+
+                <div class="Container100 ui-fluid">
+                    <div class="Card ShadowEffect">
+                        <h1 class="CardBigTopic TexAlLeft">Gerenciamento de empresa</h1>
+                        <div class="SeparatorFull"></div>
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                        <p:panelGrid columns="1" style="margin-bottom:10px" layout="grid" styleClass="ui-panelgrid-blank">
+
+
+
+
+                            <p:outputLabel for="nome" value="Nome Fantasia" styleClass="fonteOutputText" />
+                            <p:inputText id="nome" required="true" requiredMessage="Nome fantasia obrigatório" value="#{empresaCtr.empresatb01Empresa.nomeFantasia}"/>
+
+
+                            <p:outputLabel for="cnpj"  value="CNPJ" styleClass="fonteOutputText" />
+                            <p:inputMask id="cnpj" mask="99.999.999/9999-99" validator="cnpjValidator" converter="removerMascaraIntegerConverter" required="true" requiredMessage="Cnpj obrigatório" value="#{empresaCtr.empresatb01Empresa.cnpj}" />
+
+
+                            <p:outputLabel for="ie"  value="Inscrição Estadual" styleClass="fonteOutputText" />
+                            <p:inputText id="ie"  value="#{empresaCtr.empresatb01Empresa.inscricaoEstadual}"/>
+                        </p:panelGrid>
+                    </div>
+                </div>
+                <p:dialog header="Salvar" widgetVar="dlgGravar" modal="true" responsive="true" resizable="false">
+                    <h:outputText value="Deseja realmente salvar os dados?" />
+                    <br/>
+                    <br/>
+                    <div class="SeparatorFull"></div>
+
+                    <p:commandButton  action="#{empresaCtr.salvarEmpresa}" ajax="false" value="Salvar"   styleClass="GreenButton" icon="fa fa-check-circle Fs16 White" />
+
+                    <p:commandButton  ajax="true" immediate="true" value="Cancelar"  oncomplete="PF('dlgGravar').hide();" styleClass="RedButton" icon="fa fa-minus-circle Fs16 White" />
+                </p:dialog> 
+
+            </h:form>            
+        </div>
+
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+            <p:commandButton value="Novo" action="#{empresaCtr.resetForm}" onclick="PF('dlgResultado').hide();" update="frmEmpresa" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-plus-circle Fs14 White" />
+            <p:button value="Listar" outcome="empresa" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no OrangeButton" icon="ui-icon-close fa fa-list-ol Fs14 White" />
+        </p:dialog> 
+
+
+    </ui:define>
+
+</ui:composition>

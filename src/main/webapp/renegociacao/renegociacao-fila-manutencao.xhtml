@@ -1,0 +1,456 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                xmlns:o="http://omnifaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <f:metadata >
+            <o:viewParam name="CodgFila" value="#{filaManutencaoCtr.filatb01Fila}"   />
+        </f:metadata>
+
+        <h:form id="formInicial">
+            <p:remoteCommand name="onload" action="#{filaManutencaoCtr.init}" autoRun="true" update="frmDevedorCredor frmUsuarios" />
+        </h:form>
+
+        <div class="Wid70 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Fila de atendimento" outcome="fila"  />
+                    <p:menuitem value="Manutenção de fila" outcome="filaManutencao"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid70 MarAuto WidAutoOnMobile">
+            <div class="SeparatorFull"></div>
+            <h:form>
+                <p:button value="Voltar" outcome="fila"  icon="fa fa-chevron-left Fs16 White"  styleClass="RedButton" />
+                <p:commandButton value="Salvar" onclick="PF('dlgGravar').show();" icon="fa fa-database Fs16 White"  styleClass="GreenButton" />
+            </h:form>
+            <div class="SeparatorFull"></div>
+
+
+            <div class="Container100 ">
+                <div class="Card ShadowEffect">
+                    <h:form id="frmFiltro">
+                        <h1 class="CardBigTopic TexAlLeft">Parâmetros de busca de títulos</h1>
+                        <div class="SeparatorFull"></div>
+                        <h:panelGrid columns="4" styleClass="ui-panelgrid-blank">
+
+                            <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                <p:fieldset legend="Dias em atraso" >
+                                    <h:panelGrid columns="2" columnClasses="alignmentLeft">
+                                        <h:panelGroup>
+                                            <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                                <p:outputLabel for="vlrInicial"  value="Vlr. Inicial:" styleClass="fonteOutputText" />
+                                                <p:inputNumber id="vlrInicial" value="#{filaManutencaoCtr.diasEmAtrasoInicio}" size="5"  /> 
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                        <h:panelGroup>
+                                            <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                                <p:outputLabel for="vlrFinal"  value="Vlr. Final" styleClass="fonteOutputText" />
+                                                <p:inputNumber id="vlrFinal" value="#{filaManutencaoCtr.diasEmAtrasoFim}" size="5"  /> 
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                    </h:panelGrid>
+                                </p:fieldset>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                <p:fieldset legend="Valor do Título" >
+                                    <h:panelGrid columns="2" columnClasses="alignmentLeft">
+                                        <h:panelGroup>
+                                            <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                                <p:outputLabel for="vlrInicialValor"  value="Vlr. Inicial:" styleClass="fonteOutputText" />
+                                                <p:inputNumber id="vlrInicialValor" 
+                                                               value="#{filaManutencaoCtr.valorTituloInicio}" 
+                                                               size="10"
+                                                               symbol="R$" 
+                                                               decimalSeparator="," 
+                                                               thousandSeparator="."/> 
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                        <h:panelGroup>
+                                            <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                                <p:outputLabel for="vlrFinalValor"  value="Vlr. Final" styleClass="fonteOutputText" />
+                                                <p:inputNumber id="vlrFinalValor" 
+                                                               value="#{filaManutencaoCtr.valorTituloFim}" 
+                                                               size="10"
+                                                               symbol="R$" 
+                                                               decimalSeparator="," 
+                                                               thousandSeparator="."/> 
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                    </h:panelGrid>
+                                </p:fieldset>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" columnClasses="alignmentLeft">
+                                <p:fieldset legend="Data de Vencimento" >
+                                    <h:panelGrid columns="2" columnClasses="alignmentLeft">
+                                        <h:panelGroup>
+                                            <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                                <p:outputLabel for="dataEmissaoInicio"  value="Dt. Inicial:" styleClass="fonteOutputText" />
+                                                <p:calendar id="dataEmissaoInicio" 
+
+                                                            pattern="dd/MM/yyyy" 
+                                                            mask="true" 
+                                                            locale="pt_BR" 
+                                                            size="10"
+                                                            value="#{filaManutencaoCtr.dataVencimentoInicio}"/> 
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                        <h:panelGroup>
+                                            <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                                <p:outputLabel for="dataEmissaoFim"  value="Dt. Final" styleClass="fonteOutputText" />
+                                                <p:calendar id="dataEmissaoFim" 
+
+                                                            pattern="dd/MM/yyyy" 
+                                                            mask="true" 
+                                                            locale="pt_BR" 
+                                                            size="10"
+                                                            value="#{filaManutencaoCtr.dataVencimentoFim}"/> 
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                    </h:panelGrid>
+                                </p:fieldset>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                <p:fieldset legend="Todos"  >
+                                    <h:panelGrid columns="2" columnClasses="alignmentLeft">
+                                        <h:panelGroup>
+                                            <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                                <p:selectBooleanCheckbox style="text-align: center;" itemLabel="Buscar todos" label="Buscar todos" styleClass="fonteOutputText Navy" id="princi" value="#{regrasNegociacaoCtr.regraRenegociacaoEscolhida.ativo}"  >
+
+                                                </p:selectBooleanCheckbox>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+
+                                    </h:panelGrid>
+                                </p:fieldset>
+                            </h:panelGrid>
+
+
+
+                        </h:panelGrid>
+
+                        <div class="SeparatorFull"></div>
+
+
+                        <p:commandButton value="Filtrar" action="#{filaManutencaoCtr.buscarTitulo}"  update="frmTitulo frmTituloParcela"  icon="fa fa-filter  Fs16 White" styleClass="NavyButton" />
+                    </h:form>
+                </div>
+            </div>
+
+            <div class="Container100 ui-fluid">
+                <div class="Container50 ui-fluid ">
+                    <div class="Card ShadowEffect">
+                        <h1 class="CardBigTopic TexAlLeft">Clientes</h1>
+                        <div class="SeparatorFull"></div>
+                        <h:form id="frmTitulo">
+
+                            <p:growl id="growl" showDetail="true"   />  
+
+                            <p:dataTable id="disc" 
+                                         var="pessoa" 
+                                         value="#{filaManutencaoCtr.devedoresColl}" 
+                                         selectionMode="single"  
+                                         rowKey="#{pessoa.pessoaCodigo}"
+                                         paginator="false" 
+                                         emptyMessage="Sem títulos cadastrados" 
+                                         styleClass="ui-datatable"
+                                         rendered="#{filaManutencaoCtr.devedoresColl.size() > 0}"
+                                         scrollable="true" 
+                                         scrollHeight="150"
+                                         >
+                                <p:ajax event="rowSelect"  listener="#{filaManutencaoCtr.onRowTituloPrincipalSelect}" update="frmTituloParcela" />
+
+                                <p:column  style="text-align: left;" styleClass="tabelaTitulo"  >     
+                                    <h:outputText  value="#{pessoa.nome}" styleClass="tabelaConteudo"/>
+                                </p:column> 
+
+                                <p:column style="text-align: center; width: 20% " styleClass="tabelaTitulo" >     
+                                    <p:commandLink value="Adicionar" action="#{filaManutencaoCtr.adicionarDevedor(pessoa)}" update="frmTitulosEscolhidos" style="font-style: italic; " />
+                                </p:column>        
+
+                            </p:dataTable>
+                            <br />
+                            <br />
+                            <p:commandLink value="Adicionar todos" action="#{filaManutencaoCtr.adicionarTodos}" rendered="#{filaManutencaoCtr.devedoresColl.size() > 0}" update="frmTitulosEscolhidos"  style="font-style: italic; " /> 
+
+                        </h:form>
+                    </div>
+                </div>
+                <div class="Container50 ui-fluid">
+                    <div class="Card ShadowEffect">
+                        <h1 class="CardBigTopic TexAlLeft">Parcelas</h1>
+                        <div class="SeparatorFull"></div>
+                        <h:form id="frmTituloParcela">
+                            <p:growl id="growl" showDetail="true"   />  
+                            <p:dataTable id="disc" 
+                                         var="parcelas" 
+                                         value="#{filaManutencaoCtr.cobrancatb02TituloParcelas}" 
+                                         selectionMode="single"  
+                                         rowKey="#{parcelas.codigoTituloParcela}"
+                                         paginator="false" 
+                                         emptyMessage="Sem títulos cadastrados" 
+                                         styleClass="ui-datatable"
+                                         rendered="#{filaManutencaoCtr.cobrancatb02TituloParcelas.size() > 0}"
+                                         scrollable="true" 
+                                         scrollHeight="185"
+                                         >
+
+                                <p:column headerText="Título" style="text-align: left; width: 10% " styleClass="tabelaTitulo" >     
+                                    <h:outputText  value="#{parcelas.cobrancatb01Titulo.codigoTitulo}" styleClass="tabelaConteudo">
+
+                                    </h:outputText>
+                                </p:column> 
+                                <p:column headerText="Nr.Parc" style="text-align: left;  width: 15% " styleClass="tabelaTitulo" >     
+                                    <h:outputText  value="#{parcelas.numeroParcela}" styleClass="tabelaConteudo">
+
+                                    </h:outputText>
+                                </p:column> 
+
+                                <p:column headerText="Dt. Vencimento" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                    <h:outputText  value="#{parcelas.dataVencimento}" styleClass="tabelaConteudo">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                </p:column> 
+
+                                <p:column headerText="Valor" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                    <h:outputText  value="#{parcelas.valorParcela}" styleClass="tabelaConteudo">
+                                        <f:convertNumber type="currency" currencySymbol="R$" />
+                                    </h:outputText>
+                                </p:column> 
+
+                                <p:column headerText="Dias em atraso" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                    <h:outputText  value="#{parcelas.diasEmAtraso}" styleClass="tabelaConteudo">
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Situação" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                    <h:outputText  value="#{parcelas.geraltb01SituacaoFinanceira.descricao}" styleClass="tabelaConteudo">
+
+                                    </h:outputText>
+                                </p:column> 
+                            </p:dataTable>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="SeparatorFull"></div>
+            <div class="Container100 ui-fluid">
+                <div class="Container50 ui-fluid">
+                    <div class="Card ShadowEffect">
+                        <h1 class="CardBigTopic TexAlLeft">Clientes escolhidos para cobrança</h1>
+                        <div class="SeparatorFull"></div>
+                        <h:form id="frmTitulosEscolhidos">
+                            <p:growl id="growl" showDetail="true"   />  
+                            <p:dataTable id="disc" 
+                                         var="pessoa" 
+                                         value="#{filaManutencaoCtr.filatb01Fila.filatb03FilaDevedors}" 
+                                         selectionMode="single"  
+                                         rowKey="#{pessoa.devedor.pessoaCodigo}"
+                                         paginator="false" 
+                                         emptyMessage="Sem títulos cadastrados" 
+                                         styleClass="ui-datatable"
+                                         rendered="#{filaManutencaoCtr.filatb01Fila.filatb03FilaDevedors.size() > 0}"
+                                         scrollable="true" 
+                                         scrollHeight="165"
+                                         >
+                                <p:column  style="text-align: left;" styleClass="tabelaTitulo"  >     
+                                    <h:outputText  value="#{pessoa.devedor.nome}" styleClass="tabelaConteudo"/>
+                                </p:column> 
+                                <p:column style="text-align: center; width: 20% " styleClass="tabelaTitulo" >     
+                                    <p:commandLink value="Remover" action="#{filaManutencaoCtr.removerDevedor(pessoa)}" update="frmTitulosEscolhidos" style="font-style: italic; " />
+                                </p:column> 
+
+                            </p:dataTable>
+                        </h:form>
+                    </div>
+                </div>
+                <div class="Container50 ui-fluid">
+                    <div class="Card ShadowEffect">
+                        <h1 class="CardBigTopic TexAlLeft">Atendentes</h1>
+                        <div class="SeparatorFull"></div>
+                        <h:form id="frmUsuarios" acceptcharset="ISO-8859-1">
+                            <p:growl id="growl" showDetail="true"   /> 
+
+
+                            <p:dataTable id="discUsuario" 
+                                         var="usuario" 
+                                         value="#{filaManutencaoCtr.filatb01Fila.filatb02FilaUsuarios}" 
+                                         rowKey="#{usuario.segurancatb01Usuario.codigoUsuario}"
+                                         paginator="false" 
+                                         emptyMessage="Sem títulos cadastrados" 
+                                         styleClass="ui-datatable"
+                                         scrollable="true" 
+                                         scrollHeight="150"
+                                         selectionMode="single"  
+                                         rendered="#{filaManutencaoCtr.filatb01Fila.filatb02FilaUsuarios.size() > 0}"
+                                         editable="true"
+                                         >
+
+                                <p:ajax event="rowEdit" listener="#{filaManutencaoCtr.onRowEdit}" update="frmUsuarios" />
+                                
+                                
+                                <p:column headerText="Nome" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                    <h:outputText  value="#{usuario.segurancatb01Usuario.nomeUsuario}" styleClass="tabelaConteudo"/>
+                                </p:column> 
+
+                                <p:column style="text-align: center; width: 10% " styleClass="tabelaTitulo" >    
+                                    <p:cellEditor>
+                                        <f:facet name="output"><p:selectBooleanCheckbox styleClass="fonteOutputText" value="#{usuario.ativo}" style="text-align: center;" /></f:facet>
+                                        <f:facet name="input"><p:selectBooleanCheckbox styleClass="fonteOutputText" value="#{usuario.ativo}" style="text-align: center;" /></f:facet>
+                                    </p:cellEditor>
+                                </p:column> 
+
+                            </p:dataTable>
+
+                            <p:commandLink value="Adicionar usuário" onclick="PF('dlgUsuarios').show();" update="frmInserirUser"  style="font-style: italic; " /> 
+
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+            <div class="Container100 ">
+                <div class="Container100 ">
+                    <div class="Card ShadowEffect">
+                        <h1 class="CardBigTopic TexAlLeft">Dados da fila</h1>
+                        <div class="SeparatorFull"></div>
+                        <h:form id="frmDadosFila">
+
+                            <p:dialog header="Salvar" widgetVar="dlgGravar" modal="true" showHeader="false"  responsive="true" resizable="false">
+                                <h:outputText value="Deseja realmente salvar os dados?" />
+                                <br/>
+                                <br/>
+                                <div class="SeparatorFull"></div>
+
+                                <p:commandButton   value="Salvar" ajax="false" action="#{filaManutencaoCtr.salvarFila}" styleClass="GreenButton" icon="fa fa-check-circle Fs16 White" />
+
+                                <p:commandButton  ajax="true" immediate="true" value="Cancelar"  oncomplete="PF('dlgGravar').hide();" styleClass="RedButton" icon="fa fa-minus-circle Fs16 White" />
+                            </p:dialog> 
+                            <p:growl id="growl" showDetail="true"   />  
+
+                            <h:panelGrid columns="3" styleClass="ui-fluid ui-panelgrid-blank">
+                                <h:panelGroup>
+                                    <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                        <p:outputLabel  value="Nome da fila" styleClass="fonteOutputText" />
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                        <p:inputText id="descricaoFila" value="#{filaManutencaoCtr.filatb01Fila.descricao}" required="true"  size="50"/> 
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                        <p:outputLabel  value="Data inicial da fila" styleClass="fonteOutputText" />
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                        <p:calendar id="dtEntrada" 
+                                                    value="#{filaManutencaoCtr.filatb01Fila.dataInicio}"
+                                                    pattern="dd/MM/yyyy" 
+                                                    mask="true" 
+                                                    locale="pt_BR" 
+                                                    showOn="button" 
+                                                    required="true"
+                                                    /> 
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                        <p:outputLabel  value="Data final da fila" styleClass="fonteOutputText" />
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                        <p:calendar id="dtFim" 
+                                                    value="#{filaManutencaoCtr.filatb01Fila.dataFim}"
+                                                    pattern="dd/MM/yyyy" 
+                                                    mask="true" 
+                                                    locale="pt_BR" 
+                                                    showOn="button" 
+                                                    required="true"
+                                                    /> 
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                        <p:outputLabel  value="" styleClass="fonteOutputText" />
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                        <p:selectBooleanCheckbox style="text-align: center;" itemLabel="Fila Ativa" label="Fila Ativa" styleClass="fonteOutputText Navy" id="princi" value="#{filaManutencaoCtr.filatb01Fila.ativo}"  />
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>                            
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+            <div class="Container100 Responsive100 TexAlCenter ">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Credor</h1>
+                    <div class="SeparatorFull"></div>
+
+                    <h:form id="frmDevedorCredor" acceptcharset="ISO-8859-1">
+
+                        <h:panelGrid columns="1" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="5" columnClasses="alignmentLeft" styleClass="ui-fluid ui-panelgrid-blank">
+                                    <p:outputLabel for="nome" value="Credor:" styleClass="fonteOutputText"  />
+                                    <p:inputText id="nome" readonly="true" value="#{filaManutencaoCtr.empresaCredora.nomeFantasia}" size="50" style=""/>
+                                    <p:commandButton  id="btnFiltrarDevedor" rendered="false" immediate="true" icon="fa fa-search Fs6 Green" action="#{renegociacaoCtr.abrirBuscaPessoa}"  styleClass="GrayButton"  title="Buscar" >  
+                                        <p:ajax event="dialogReturn" listener="#{renegociacaoCtr.onDevedorBuscaReturn}" update="frmDevedorCredor"  /> 
+                                    </p:commandButton> 
+                                    <p:outputLabel for="cpfCnpjDevedor" value="CNPJ:" styleClass="fonteOutputText"  />
+                                    <p:inputText id="cpfCnpjDevedor" readonly="true" size="30" converter="cpfConverter" value="#{filaManutencaoCtr.empresaCredora.cnpj}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                    </h:form>
+
+                </div>
+            </div>
+
+        </div>
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+            <p:commandButton value="Novo" action="#{tituloCtr.limparForm}" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-plus-circle Fs14 White" />
+            <p:button value="Listar" outcome="tituloPrincipal" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no OrangeButton" icon="ui-icon-close fa fa-list-ol Fs14 White" />
+        </p:dialog> 
+
+        <p:dialog header="Usuários" widgetVar="dlgUsuarios" modal="true" responsive="true" resizable="false" >
+            <h:form id="frmInserirUser" >
+                <div class="Container100">
+                    <p:dataTable id="checkboxDT" 
+                                 var="usuario" 
+                                 value="#{filaManutencaoCtr.usuariosColl}" 
+                                 selection="#{filaManutencaoCtr.usuariosEscolhidosColl}"
+                                 rowKey="#{usuario.codigoUsuario}"
+                                 style="width: 400px !important"
+                                 >
+
+                        <p:column selectionMode="multiple" style="width:16px;text-align:center" />
+                        <p:column headerText="Nome" style="text-align: left; " styleClass="tabelaTitulo" >     
+                            <h:outputText  value="#{usuario.nomeUsuario}" styleClass="tabelaConteudo"/>
+                        </p:column> 
+
+                    </p:dataTable>
+                    <br/>
+                    <br/>
+                    <p:commandButton value="Adicionar" action="#{filaManutencaoCtr.addUsuario}" update="frmUsuarios" onclick="PF('dlgUsuarios').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-plus-circle Fs14 White" />
+                </div>
+            </h:form>
+        </p:dialog> 
+
+    </ui:define>
+</ui:composition>

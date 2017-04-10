@@ -1,0 +1,210 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="formInicial">
+            <p:remoteCommand name="onload" action="#{renegociacaoTempoRealCtr.atualizarDados}"  onstart="" autoRun="true" update="formResumo frmGraficos frmParte2" />
+
+        </h:form>
+
+        <div class="Wid70 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Acompanhamento em tempo real" outcome="renegociacaoTempoReal"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+        <h:form id="formResumo">
+            <p:poll interval="10" listener="#{renegociacaoTempoRealCtr.atualizarDados}" update="formResumo frmGraficos frmParte2" />
+
+            <div class="Wid70 MarAuto WidAutoOnMobile ">
+
+
+
+                <div class="Container33 Responsive Flex ">
+                    <div class="Card BlueBack  ShadowEffect">
+                        <div class="EmptyBox5"></div>
+                        <div class="Container100 NoIndent Responsive100">
+                            <span class="FontLatoBlack White Opac80 Fleft Fs10 DispBlock">ATENDIMENTO REALIZADO</span><br/>
+                            <span class="FontLatoRegular White Fleft Fs30 DispBlock">#{renegociacaoTempoRealCtr.totalAtendimentos}</span> 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="Container33 Responsive Flex" >
+                    <div class="Card AquaBack ShadowEffect">
+                        <div class="EmptyBox5"></div>
+                        <div class="Container100 NoIndent Responsive100">
+                            <span class="FontLatoBlack White Opac80 Fleft Fs10 DispBlock">RENEGOCIAÇÃO EFETUADA</span><br/>
+                            <span class="FontLatoRegular White Fleft Fs30 DispBlock">#{renegociacaoTempoRealCtr.totalRenegociacoes}</span> 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="Container33 Responsive Flex" >
+                    <div class="Card NavyBack ShadowEffect">
+                        <div class="EmptyBox5"></div>
+                        <div class="Container100 NoIndent Responsive100">
+                            <span class="FontLatoBlack White Opac80 Fleft Fs10 DispBlock">CRÉDITO RECUPERADO</span><br/>
+                            <span class="FontLatoRegular Red Fleft Fs30 DispBlock">
+                                <p:outputLabel value="#{renegociacaoTempoRealCtr.totalRenegociado}" class="FontLatoRegular White Fleft Fs30 DispBlock"  >
+                                    <f:convertNumber type="currency" currencySymbol="R$" />
+                                </p:outputLabel>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </h:form>
+
+        <div class="Wid70 MarAuto WidAutoOnMobile"> 
+            <h:form id="frmGraficos">
+                <div class="Container50 Responsive100 Flex ">
+                    <div class="Card ShadowEffect">
+                        <h1 class="CardSmallTopic TexAlLeft">Em atendimento</h1>
+                        <div class="SeparatorFull"></div>
+                        <p:dataTable id="dtEmAtendimento" 
+                                     var="ea" 
+                                     paginator="false"
+                                     value="#{renegociacaoTempoRealCtr.cobrancaEmAtendimentoColl}"
+                                     selection="#{renegociacaoCtr.parcelasEscolhidas}"
+                                     rowKey="#{ea.codigoAtendimento}"
+                                     styleClass="ui-datatable"
+                                     emptyMessage="Sem atendimentos encontrados"
+                                     rendered="#{renegociacaoTempoRealCtr.cobrancaEmAtendimentoColl.size() > 0}"
+                                     >
+                            <p:column headerText="Devedor" style="text-align: left; " styleClass="tabelaTitulo" >
+                                <p:outputLabel value="#{ea.devedor.nome}" styleClass="tabelaConteudo" />
+                            </p:column>
+
+                            <p:column headerText="Credor" style="text-align: left; " styleClass="tabelaTitulo" >
+                                <p:outputLabel value="#{ea.credor.nome}" styleClass="tabelaConteudo" />
+                            </p:column>
+                            <p:column headerText="Usuário" style="text-align: left; " styleClass="tabelaTitulo" >
+                                <p:outputLabel value="#{ea.segurancatb01Usuario.nomeUsuario}" styleClass="tabelaConteudo" />
+                            </p:column>
+                        </p:dataTable>
+
+                    </div>
+                </div>
+                <div class="Container50 Responsive100 Flex ">
+                    <div class="Card ShadowEffect">
+                        <h1 class="CardSmallTopic TexAlLeft">Atendimento pausado</h1>
+                        <div class="SeparatorFull"></div>
+                        <p:dataTable id="dtPausadas" 
+                                     var="ap" 
+                                     paginator="false"
+                                     value="#{renegociacaoTempoRealCtr.cobrancaPausadaColl}"
+                                     selection="#{renegociacaoCtr.parcelasEscolhidas}"
+                                     rowKey="#{ap.codigoAtendimento}"
+                                     styleClass="ui-datatable"
+                                     emptyMessage="Sem atendimentos encontrados"
+                                     rendered="#{renegociacaoTempoRealCtr.cobrancaPausadaColl.size() > 0}"
+                                     >
+                            <p:column headerText="Devedor" style="text-align: left; " styleClass="tabelaTitulo" >
+                                <p:outputLabel value="#{ap.devedor.nome}" styleClass="tabelaConteudo" />
+                            </p:column>
+
+                            <p:column headerText="Credor" style="text-align: left; " styleClass="tabelaTitulo" >
+                                <p:outputLabel value="#{ap.credor.nome}" styleClass="tabelaConteudo" />
+                            </p:column>
+                            <p:column headerText="Usuário" style="text-align: left; " styleClass="tabelaTitulo" >
+                                <p:outputLabel value="#{ap.segurancatb01Usuario.nomeUsuario}" styleClass="tabelaConteudo" />
+                            </p:column>
+                        </p:dataTable>
+
+                    </div>
+                </div>
+
+            </h:form>
+        </div>
+        <div class="Wid70 MarAuto WidAutoOnMobile"> 
+            <div class="SeparatorFull"></div>
+        </div>
+        <div class="Wid70 MarAuto WidAutoOnMobile"> 
+            <h:form id="frmParte2">
+
+                <div class="Container50 Responsive100 Flex ">
+                    <div class="Card ShadowEffect">
+                        <h1 class="CardSmallTopic TexAlLeft"> Atendimentos finalizados</h1>
+                        <div class="SeparatorFull"></div>
+                        <p:dataTable id="dtFinalizados" 
+                                     var="af" 
+                                     paginator="false"
+                                     value="#{renegociacaoTempoRealCtr.cobrancaFinalizadaColl}"
+                                     rowKey="#{af.codigoAtendimento}"
+                                     styleClass="ui-datatable"
+                                     emptyMessage="Sem atendimentos encontrados"
+                                     rendered="#{renegociacaoTempoRealCtr.cobrancaFinalizadaColl.size() > 0}"
+                                     >
+                            <p:column headerText="Devedor" style="text-align: left; width: 30% " styleClass="tabelaTitulo" >
+                               
+                                <p:outputLabel value="#{af.devedor.nome}" styleClass="tabelaConteudo" />
+                            </p:column>
+
+                            <p:column headerText="Credor" style="text-align: left; " styleClass="tabelaTitulo" >
+                                <p:outputLabel value="#{af.credor.nome}" styleClass="tabelaConteudo" />
+                            </p:column>
+                            <p:column headerText="Usuário" style="text-align: left; " styleClass="tabelaTitulo" >
+                                <p:outputLabel value="#{af.segurancatb01Usuario.nomeUsuario}" styleClass="tabelaConteudo" />
+                            </p:column>
+                            <p:column headerText="Data de retorno" style="text-align: left; " styleClass="tabelaTitulo" >
+                                <p:outputLabel value="#{af.dataRetorno}" styleClass="tabelaConteudo" >
+                                    <f:convertDateTime dateStyle="long" pattern="dd/MM/yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </div>
+                </div>
+                <div class="Container50 Responsive100 Flex ">
+                    <div class="Card ShadowEffect">
+                        <h1 class="CardSmallTopic TexAlLeft">Atendimentos invalidados</h1>
+                        <div class="SeparatorFull"></div>
+                        <p:dataTable id="dtInvalidados" 
+                                     var="ai" 
+                                     paginator="false"
+                                     value="#{renegociacaoTempoRealCtr.cobrancaInvalidadaColl}"
+                                     rowKey="#{ai.codigoAtendimento}"
+                                     styleClass="ui-datatable"
+                                     emptyMessage="Sem atendimentos encontrados"
+                                     rendered="#{renegociacaoTempoRealCtr.cobrancaInvalidadaColl.size() > 0}"
+                                     >
+                            <p:column headerText="Devedor" style="text-align: left; " styleClass="tabelaTitulo" >
+                                <p:outputLabel value="#{ai.devedor.nome}" styleClass="tabelaConteudo" />
+                            </p:column>
+
+                            <p:column headerText="Credor" style="text-align: left; " styleClass="tabelaTitulo" >
+                                <p:outputLabel value="#{ai.credor.nome}" styleClass="tabelaConteudo" />
+                            </p:column>
+                            <p:column headerText="Usuário" style="text-align: left; " styleClass="tabelaTitulo" >
+                                <p:outputLabel value="#{ai.segurancatb01Usuario.nomeUsuario}" styleClass="tabelaConteudo" />
+                            </p:column>
+                        </p:dataTable>
+
+                    </div>
+                </div>
+            </h:form>
+        </div>
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+
+
+            <p:commandButton value="OK" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-power-off Fs14 White" />
+        </p:dialog> 
+
+    </ui:define>
+</ui:composition>

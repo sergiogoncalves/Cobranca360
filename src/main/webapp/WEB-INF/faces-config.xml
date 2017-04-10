@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    
+    <name>primefaces_olympos</name>
+    
+    
+    <navigation-rule>
+       
+        <navigation-case>
+            <from-outcome>empresa</from-outcome>
+            <to-view-id>/empresa/empresa-principal.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>empresaCadastro</from-outcome>
+            <to-view-id>/empresa/empresa-cadastro.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>pessoaFisicaPrincipal</from-outcome>
+            <to-view-id>/pessoa/pessoa-fisica-principal.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>pessoaFisicaCadastro</from-outcome>
+            <to-view-id>/pessoa/pessoa-fisica-cadastro.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>pessoaJuridicaPrincipal</from-outcome>
+            <to-view-id>/pessoa/pessoa-juridica-principal.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>pessoaJuridicaCadastro</from-outcome>
+            <to-view-id>/pessoa/pessoa-juridica-cadastro.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>tituloPrincipal</from-outcome>
+            <to-view-id>/titulo/titulo-principal.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>tituloCadastro</from-outcome>
+            <to-view-id>/titulo/titulo-cadastro.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>renegociacaoPrincipal</from-outcome>
+            <to-view-id>/renegociacao/renegociacao-principal.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>renegociacaoHistorico</from-outcome>
+            <to-view-id>/renegociacao/renegociacao-historico.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>renegociacaoTempoReal</from-outcome>
+            <to-view-id>/renegociacao/renegociacao-tempo-real.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>fila</from-outcome>
+            <to-view-id>/renegociacao/renegociacao-fila.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>filaManutencao</from-outcome>
+            <to-view-id>/renegociacao/renegociacao-fila-manutencao.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>usuarioPrincipal</from-outcome>
+            <to-view-id>/seguranca/usuario-principal.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>usuarioCadastro</from-outcome>
+            <to-view-id>/seguranca/usuario-cadastro.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>usuarioProcesso</from-outcome>
+            <to-view-id>/seguranca/usuario-processos.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>regrasRenegociacao</from-outcome>
+            <to-view-id>/parametros/regras-renegociacao.xhtml</to-view-id>
+        </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>processosAdministrativo</from-outcome>
+            <to-view-id>/administrativo/processos-gerais.xhtml</to-view-id>
+        </navigation-case>
+        
+
+
+    </navigation-rule>
+    
+    <application>
+        <action-listener>org.primefaces.application.DialogActionListener</action-listener>
+        <navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+        <view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+    </application>
+    
+</faces-config>

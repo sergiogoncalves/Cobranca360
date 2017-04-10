@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>Cobrança - Cobre bem</title>
+
+        <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script> -->
+        <h:outputScript name="js/nanoscroller.js" library="olympos-layout" />
+        <h:outputScript name="js/layout.js" library="olympos-layout" />
+        <h:outputScript name="locale-primefaces.js" library="js" />
+        <link rel="icon" type="image/png" href="/resources/imgs/second.png" />
+        <ui:insert name="head"/>
+
+        <style>
+            body {
+                background-image: url("http://localhost:8080/Cobranca360/resources/imgs/mente.png");
+                background-repeat: no-repeat;
+                background-position: left bottom;
+                
+                background-attachment: fixed;
+            }
+        </style>
+
+    </h:head>
+
+    <h:body styleClass="BlueTopbar SlimMenu" >
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:panelGrid id="pnlLoading" columns="1" styleClass="ui-panelgrid-blank ui-fluid" style="vertical-align: central; text-align: center;" layout="grid" >
+                <p:graphicImage name="carregando.gif" library="imgs"  />
+                <h:outputLabel value="Processando" />
+            </p:panelGrid>
+        </p:dialog>
+        <p:ajaxStatus onstart="PF('statusDialog').show()"  onerror="PF('statusDialog').hide()" onsuccess="PF('statusDialog').hide()" />
+
+
+
+        <ui:include src="topbar.xhtml" />
+
+        <!-- LAYOUT CONTAINER -->
+
+
+
+        <ui:insert name="content">
+
+        </ui:insert>
+
+
+
+
+        <h:outputStylesheet name="css/core-layout.css" library="olympos-layout" />
+        <h:outputStylesheet name="css/animate.css" library="olympos-layout" />
+        <h:outputStylesheet name="css/nanoscroller.css" library="olympos-layout" />
+        <h:outputStylesheet name="css/olympos-font.css" library="olympos-layout" />
+        <h:outputStylesheet name="css/font-awesome.css" library="olympos-layout" />
+        <h:outputStylesheet name="css/olympos-layout.css" library="olympos-layout" />
+    </h:body>
+
+</html>

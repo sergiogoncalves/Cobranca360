@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="Cobranca_DB" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <non-jta-data-source>java:/cobranca360</non-jta-data-source>
+    <class>br.com.helenamax.cobranca.model.Cobrancatb01Titulo</class>
+    <class>br.com.helenamax.cobranca.model.Cobrancatb02TituloParcela</class>
+    <class>br.com.helenamax.cobranca.model.Cobrancatb03TituloTipo</class>
+    <class>br.com.helenamax.cobranca.model.Cobrancatb04TituloParcelaLancamento</class>
+    <class>br.com.helenamax.cobranca.model.Cobrancatb05TituloParcelaCheque</class>
+    <class>br.com.helenamax.cobranca.model.Cobrancatb06TituloObservacaoFinanceira</class>
+    <class>br.com.helenamax.cobranca.model.Empresatb01Empresa</class>
+    <class>br.com.helenamax.cobranca.model.Empresatb02Pessoa</class>
+    <class>br.com.helenamax.cobranca.model.Empresatb03PessoaFisica</class>
+    <class>br.com.helenamax.cobranca.model.Empresatb04PessoaJuridica</class>
+    <class>br.com.helenamax.cobranca.model.Empresatb05PessoaEndereco</class>
+    <class>br.com.helenamax.cobranca.model.Empresatb06PessoaContato</class>
+    <class>br.com.helenamax.cobranca.model.Empresatb07UsuarioCobraPessoa</class>
+    <class>br.com.helenamax.cobranca.model.Empresatb08PessoaRegraRenegociacao</class>
+    <class>br.com.helenamax.cobranca.model.Empresatb09EmpresaRegraRenegociacao</class>
+    <class>br.com.helenamax.cobranca.model.Filatb01Fila</class>
+    <class>br.com.helenamax.cobranca.model.Filatb02FilaUsuario</class>
+    <class>br.com.helenamax.cobranca.model.Filatb03FilaDevedor</class>
+    <class>br.com.helenamax.cobranca.model.Filatb04FilaTituloSituacao</class>
+    <class>br.com.helenamax.cobranca.model.Filatb05FilaDevedorTitulo</class>
+    <class>br.com.helenamax.cobranca.model.Geraltb01SituacaoFinanceira</class>
+    <class>br.com.helenamax.cobranca.model.Geraltb02TipoContato</class>
+    <class>br.com.helenamax.cobranca.model.Renegociacaotb01Renegociacao</class>
+    <class>br.com.helenamax.cobranca.model.Renegociacaotb02RenegociacaoParcela</class>
+    <class>br.com.helenamax.cobranca.model.Renegociacaotb03ParcelaRenegociada</class>
+    <class>br.com.helenamax.cobranca.model.Segurancatb01Usuario</class>
+    <class>br.com.helenamax.cobranca.model.Segurancatb02Processo</class>
+    <class>br.com.helenamax.cobranca.model.Segurancatb03Perfil</class>
+    <class>br.com.helenamax.cobranca.model.Segurancatb04PerfilProcesso</class>
+    <class>br.com.helenamax.cobranca.model.Segurancatb05PerfilUsuario</class>
+    <class>br.com.helenamax.cobranca.model.Segurancatb06UsuarioProcesso</class>
+    <class>br.com.helenamax.cobranca.model.Empresatb10PessoaResponsavel</class>
+    <class>br.com.helenamax.cobranca.model.Segurancatb07UsuarioCobraEmpresa</class>
+    <class>br.com.helenamax.cobranca.model.Cobrancatb07Atendimento</class>
+    <class>br.com.helenamax.cobranca.model.Cobrancatb08AtendimentoTituloParcela</class>
+    <class>br.com.helenamax.cobranca.model.Cobrancatb09AtendimentoAndamento</class>
+    <class>br.com.helenamax.cobranca.model.Cobrancatb10AtendimentoSituacao</class>
+    <class>br.com.helenamax.cobranca.model.Empresatb09PessoaRegraParcelamento</class>
+    <class>br.com.helenamax.cobranca.model.Segurancatb08ProcessoEmpresa</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+      <!-- <property name="hibernate.hbm2ddl.auto" value="update"/>  -->
+	  
+      <property name="hibernate.show_sql" value="false"/>
+      <property name="hibernate.format_sql" value="false"/>
+    </properties>
+  </persistence-unit>
+</persistence>

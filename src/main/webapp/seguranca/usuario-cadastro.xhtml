@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                xmlns:o="http://omnifaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+
+        <f:metadata >
+            <o:viewParam name="CodgUsuario" value="#{segurancaCtr.segurancatb01Usuario}"   />
+        </f:metadata>
+
+        <h:form id="formInicial">
+            <p:remoteCommand name="onload" action="#{segurancaCtr.initCadastro}" autoRun="true" update="frmUsuario" />
+        </h:form>
+
+        <div class="Wid70 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Gerenciamento de usuário" outcome="usuarioPrincipal"  />
+                    <p:menuitem value="Cadastro de usuário" outcome="usuarioCadastro"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid70 MarAuto WidAutoOnMobile ">
+
+            <div class="SeparatorFull"></div>
+            <h:form>
+                <p:button value="Voltar" outcome="usuarioPrincipal"  icon="fa fa-chevron-left Fs16 White"  styleClass="RedButton" />
+                <p:commandButton value="Salvar" onclick="PF('dlgGravar').show();" icon="fa fa-database Fs16 White"  styleClass="GreenButton" />
+            </h:form>
+            <div class="SeparatorFull"></div>
+            <div class="Container100 Responsive100 ">
+                <div class="Card ShadowEffect">
+
+                    <h1 class="CardBigTopic TexAlLeft">Gerenciamento de usuário</h1>
+                    <div class="SeparatorFull"></div>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <h:form id="frmUsuario" acceptcharset="ISO-8859-1">
+                        <p:dialog header="Salvar" widgetVar="dlgGravar" modal="true" showHeader="false"  responsive="true" resizable="false">
+                            <h:outputText value="Deseja realmente salvar os dados?" />
+                            <br/>
+                            <br/>
+                            <div class="SeparatorFull"></div>
+
+                            <p:commandButton   value="Salvar" ajax="true" action="#{segurancaCtr.salvarUsuario}" styleClass="GreenButton" icon="fa fa-check-circle Fs16 White" />
+
+                            <p:commandButton  ajax="true" immediate="true" value="Cancelar"  oncomplete="PF('dlgGravar').hide();" styleClass="RedButton" icon="fa fa-minus-circle Fs16 White" />
+                        </p:dialog> 
+
+                        <h:panelGrid columns="2" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="3" columnClasses="alignmentLeft">
+
+                                    <p:outputLabel for="nome" value="Pessoa:" styleClass="fonteOutputText"  />
+                                    <p:inputText id="nome" readonly="true" required="true" requiredMessage="Gentileza escolha a pessoa" value="#{segurancaCtr.segurancatb01Usuario.empresatb02Pessoa.nome}" />
+
+                                    <p:commandButton  id="btnFiltrarUsuario" immediate="true" icon="fa fa-search Fs6 Green" action="#{segurancaCtr.abrirBuscaPessoa}"  styleClass="GrayButton"  title="Detalhes" >  
+                                        <p:ajax event="dialogReturn" listener="#{segurancaCtr.onPessoaReturn}" update="frmUsuario"  /> 
+                                    </p:commandButton>
+
+                                </h:panelGrid>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <h:panelGrid columns="2" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="cpfUsuario" value="CPF:" styleClass="fonteOutputText"  />
+                                    <p:inputText id="cpfUsuario" readonly="true" value="#{segurancaCtr.segurancatb01Usuario.empresatb02Pessoa.empresatb03PessoaFisica.docFederal}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="chamado" value="Como gostaria de ser chamado no sistema?" styleClass="fonteOutputText"  />
+                                    <p:inputText id="chamado" value="#{segurancaCtr.segurancatb01Usuario.nomeUsuario}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <h:panelGrid columns="3" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="login"  value="Login:" styleClass="fonteOutputText"  />
+                                    <p:inputText id="login" required="true" requiredMessage="Login obrigatório" value="#{segurancaCtr.segurancatb01Usuario.login}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="senha" value="Senha:"  styleClass="fonteOutputText"  />
+                                    <p:password id="senha" redisplay="true" requiredMessage="Senha obrigatória" promptLabel="Entre com a senha" weakLabel="Fraca" goodLabel="Bom" strongLabel="Forte" match="repete"  feedback="true"  value="#{segurancaCtr.segurancatb01Usuario.senha}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="repete" value="Repita a senha:" styleClass="fonteOutputText"  />
+                                    <p:password id="repete" redisplay="true" requiredMessage="Repita a senha" value="#{segurancaCtr.repeteSenha}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" >
+                                    <p:selectBooleanButton id="Ativo" value="#{segurancaCtr.segurancatb01Usuario.situacaoAtivo}" onLabel="Ativo" offLabel="Inativo"  styleClass="NavyButton" />
+
+  
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="dataInicio" value="Data de Início: " styleClass="fonteOutputText"  />
+                                    <p:calendar id="dataInicio" required="true" requiredMessage="Defina a data de início" value="#{segurancaCtr.segurancatb01Usuario.dataInicio}" styleClass="calandarios"   maxlength="10"  pattern="dd/MM/yyyy" mask="true" locale="pt_BR" showOn="button"   />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel for="dataFim" value="Data de fim:" styleClass="fonteOutputText"  />
+                                    <p:calendar id="dataFim" required="true" requiredMessage="Defina a data de fim" value="#{segurancaCtr.segurancatb01Usuario.dataFim}" styleClass="calandarios"   maxlength="10"  pattern="dd/MM/yyyy" mask="true" locale="pt_BR" showOn="button"   />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                </div>
+            </div>
+        </div>
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+
+
+            <p:commandButton value="OK" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-power-off Fs14 White" />
+        </p:dialog> 
+    </ui:define>
+</ui:composition>

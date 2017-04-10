@@ -1,0 +1,236 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="formInicial">
+            <p:remoteCommand name="onload" action="#{regrasNegociacaoCtr.init}" autoRun="true" update="frmRegras" />
+        </h:form>
+
+        <div class="Wid70 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="z-index: -1; border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Gerenciamento de regras de negociação" outcome="usuarioPrincipal"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid70 MarAuto WidAutoOnMobile Responsive100">
+
+            <div class="SeparatorFull"></div>
+
+            <div class="Container100 ">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Regras de negociação</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmBusca" acceptcharset="ISO-8859-1">
+                        <p:growl id="growl" showDetail="true"   /> 
+                        <h:panelGrid columns="5" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="(+) Juros" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputNumber decimalSeparator="," thousandSeparator="." minValue="0" symbolPosition="s" maxValue="100" symbol="%" decimalPlaces="2"   required="true" styleClass="fonteOutputText"  value="#{regrasNegociacaoCtr.regraRenegociacaoEscolhida.juro}"/>
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="(+) Multa" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputNumber decimalSeparator="," thousandSeparator="." minValue="0" symbolPosition="s" maxValue="100" symbol="%" decimalPlaces="2"  required="true"  styleClass="fonteOutputText" value="#{regrasNegociacaoCtr.regraRenegociacaoEscolhida.multa}"/>
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="(+) Mora" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputNumber decimalSeparator="," thousandSeparator="." minValue="0" symbolPosition="s" maxValue="100" symbol="%" decimalPlaces="2"  required="true" styleClass="fonteOutputText" value="#{regrasNegociacaoCtr.regraRenegociacaoEscolhida.mora}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="(+) Honorários" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputNumber decimalSeparator="," thousandSeparator="." minValue="0" symbolPosition="s" maxValue="100" symbol="%" decimalPlaces="2"  required="true" styleClass="fonteOutputText" value="#{regrasNegociacaoCtr.regraRenegociacaoEscolhida.honorarios}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="(-) Desconto" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputNumber decimalSeparator="," thousandSeparator="." symbolPosition="s" minValue="0" maxValue="100" symbol="%" decimalPlaces="2"   required="true" styleClass="fonteOutputText" value="#{regrasNegociacaoCtr.regraRenegociacaoEscolhida.desconto}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="(+) Percentual de entrada" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputNumber decimalSeparator="," thousandSeparator="." symbolPosition="s" minValue="0" maxValue="100" symbol="%" decimalPlaces="2"  required="true"  styleClass="fonteOutputText" value="#{regrasNegociacaoCtr.regraRenegociacaoEscolhida.percentualEntrada}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="(+) Mínimo de parcelas" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputNumber  minValue="1" maxValue="100" required="true" styleClass="fonteOutputText" value="#{regrasNegociacaoCtr.regraRenegociacaoEscolhida.minimoParcelas}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="(+) Máximo de parcelas" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputNumber minValue="1" maxValue="100" required="true" styleClass="fonteOutputText" value="#{regrasNegociacaoCtr.regraRenegociacaoEscolhida.maximoParcelas}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+
+
+
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel    value="(+) Vlr. mínimo da parcela" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputNumber decimalSeparator="," thousandSeparator="." symbol="R$" decimalPlaces="2" required="true"  styleClass="fonteOutputText" value="#{regrasNegociacaoCtr.regraRenegociacaoEscolhida.valorMinimoParcela}" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="1" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:outputLabel  value="Observação da regra" styleClass="fonteOutputText" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:inputTextarea value="#{regrasNegociacaoCtr.regraRenegociacaoEscolhida.descricao}" />
+                                </h:panelGrid>
+
+                            </h:panelGroup>
+                        </h:panelGrid>
+
+
+
+                        <h:panelGrid columns="1" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" columnClasses="alignmentLeft">
+                                    <p:selectBooleanCheckbox style="text-align: center;" itemLabel="Ativo" label="Ativo" styleClass="fonteOutputText Navy" id="princi" value="#{regrasNegociacaoCtr.regraRenegociacaoEscolhida.ativo}"  >
+                                        <p:ajax update="frmRegras" listener="#{regrasNegociacaoCtr.mudarRegraPrincipal}" />
+                                    </p:selectBooleanCheckbox>
+
+                                </h:panelGrid>
+
+                            </h:panelGroup>
+                        </h:panelGrid>
+
+                        <div class="SeparatorFull"></div>
+                        <p:commandButton value="Salvar" action="#{regrasNegociacaoCtr.gravarRegra}" update="frmRegras frmBusca"  icon="fa fa-arrow-down  Fs16 White" styleClass="GreenButton" />
+                    </h:form>
+
+                </div>
+            </div>
+
+            <div class="Container100 ui-fluid">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardSmallTopic TexAlLeft">Regras cadastradas</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmRegras">
+
+                        <p:dataTable id="disc" 
+                                     var="regras" 
+                                     value="#{regrasNegociacaoCtr.regraRenegociacaoColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{regras.codigoPessoaEmpresaRegraRenegociacao}"
+                                     paginator="false" 
+                                     emptyMessage="Sem regras cadastradas" 
+                                     styleClass="ui-datatable"
+                                     >
+
+                            <p:ajax event="rowSelect"  listener="#{regrasNegociacaoCtr.mudarRegras}" update="frmBusca" />
+
+                            <p:column headerText="Ativo" style="text-align: center; width: 5% " styleClass="tabelaTitulo" > 
+                                <p:selectBooleanCheckbox styleClass="fonteOutputText" value="#{regras.ativo}"  style="text-align: center;" />
+                            </p:column>
+
+                            <p:column headerText="Dt. Cadatro" style="text-align: left; " styleClass="tabelaTitulo" > 
+                                <h:outputText  value="#{regras.dataCadastro}" styleClass="tabelaConteudo">
+                                     <f:convertDateTime dateStyle="long" pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Juros" style="text-align: left; " styleClass="tabelaTitulo" > 
+                                <h:outputText  value="#{regras.juro}" styleClass="tabelaConteudo">
+                                    <f:convertNumber pattern="#####,00%"/>
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Multa" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{regras.multa}" styleClass="tabelaConteudo">
+                                    <f:convertNumber pattern="#####,00%"/>
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Mora" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{regras.mora}" styleClass="tabelaConteudo">
+                                    <f:convertNumber pattern="#####,00%"/>
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Honorários" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{regras.honorarios}" styleClass="tabelaConteudo">
+                                    <f:convertNumber pattern="#####,00%"/>
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Desconto" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{regras.desconto}" styleClass="tabelaConteudo">
+                                    <f:convertNumber pattern="#####,00%"/>
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Perc. entrada" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{regras.percentualEntrada}" styleClass="tabelaConteudo">
+                                    <f:convertNumber pattern="#####,00%"/>
+                                </h:outputText>
+                            </p:column> 
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+
+        </div>
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+
+
+            <p:commandButton value="OK" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-power-off Fs14 White" />
+        </p:dialog> 
+    </ui:define>
+</ui:composition>

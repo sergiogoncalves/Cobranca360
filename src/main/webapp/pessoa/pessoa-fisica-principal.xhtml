@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+
+        <h:form id="formInicial">
+            <p:remoteCommand name="onload" action="#{pessoaCtr.iniciarPrincipal}" autoRun="true" update="frmBusca" />
+        </h:form>
+
+        <div class="Wid70 MarAuto MarTop0 WidAutoOnMobile">
+            <h:form id="formBread">
+                <p:breadCrumb  style="border-color: transparent; font-size: small; background-color: transparent;">
+                    <p:menuitem value="Você está aqui"  />
+                    <p:menuitem value="Gerenciamento de pessoa física" outcome="pessoaFisicaPrincipal"  />
+                </p:breadCrumb>
+            </h:form>
+        </div>
+
+
+
+        <div class="Wid70 MarAuto WidAutoOnMobile">
+
+            <div class="SeparatorFull"></div>
+
+
+            <h:form id="frmBotoes">
+                <p:button value="Cadastrar pessoa física" icon="fa fa-plus-circle  Fs16 White" outcome="pessoaFisicaCadastro" styleClass="GreenButton" />
+            </h:form>
+
+            <div class="SeparatorFull"></div>
+            <div class="Container100 ">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Filtros</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmBusca" acceptcharset="ISO-8859-1">
+                        <h:panelGrid columns="1" styleClass="ui-fluid ui-panelgrid-blank">
+                            <h:panelGroup>
+                                <h:panelGrid columns="6" columnClasses="alignmentLeft">
+
+                                    <p:outputLabel for="nome" value="Nome:"  styleClass="fonteOutputText" />
+                                    <p:inputText id="nome"  value="#{pessoaCtr.empresatb03PessoaFisicaPesquisa.empresatb02Pessoa.nome}"/>
+
+                                    <p:outputLabel for="cpf" value="CPF:" styleClass="fonteOutputText"  />
+                                    <p:inputText id="cpf" value="#{pessoaCtr.empresatb03PessoaFisicaPesquisa.docFederal}"/>
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+
+                        <div class="SeparatorFull"></div>
+                        <p:commandButton value="Filtrar" action="#{pessoaCtr.buscarPessoa}" update="frmEmpresas"  icon="fa fa-filter  Fs16 White" styleClass="NavyButton" />
+                    </h:form>
+
+                </div>
+            </div>
+            <div class="Container100 ui-fluid">
+                <div class="Card ShadowEffect">
+                    <h1 class="CardBigTopic TexAlLeft">Pessoas cadastradas</h1>
+                    <div class="SeparatorFull"></div>
+                    <h:form id="frmEmpresas">
+                        <p:growl id="growl" showDetail="true"   />  
+                        <p:dataTable id="disc" 
+                                     var="pessoa" 
+                                     value="#{pessoaCtr.empresatb03PessoaFisicaColl}" 
+                                     selectionMode="single"  
+                                     rowKey="#{pessoa.pessoaFisicaCodigo}"
+                                     paginator="false" 
+                                     emptyMessage="Sem pessoas cadastradas" 
+                                     styleClass="ui-datatable"
+
+                                     >
+
+                            <p:column headerText="Nome" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{pessoa.empresatb02Pessoa.nome}" styleClass="tabelaConteudo"/>
+                            </p:column> 
+
+
+                            <p:column headerText="CPF" style="text-align: left; " styleClass="tabelaTitulo" >     
+                                <h:outputText  value="#{pessoa.docFederal}" styleClass="tabelaConteudo" converter="cpfConverter" />
+                            </p:column> 
+
+                            <p:column style="text-align: center; width: 10% " styleClass="tabelaTitulo" >     
+                                <p:link value="Detalhes" outcome="pessoaFisicaCadastro"  style="font-style: italic; " >
+                                    <f:param name="CodgPessoa" value="#{pessoa.pessoaFisicaCodigo}"/>
+                                </p:link>
+                            </p:column> 
+
+
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+
+        <p:dialog header="Sucesso!" widgetVar="dlgResultado" modal="true" responsive="true" resizable="false">
+            <h:outputText value="Ação completada com sucesso!" />
+            <br/>
+            <br/>
+            <div class="SeparatorFull"></div>
+
+
+            <p:commandButton value="OK" onclick="PF('dlgResultado').hide();" styleClass="ui-confirmdialog-no GreenButton" icon="ui-icon-close fa fa-power-off Fs14 White" />
+        </p:dialog> 
+    </ui:define>
+</ui:composition>

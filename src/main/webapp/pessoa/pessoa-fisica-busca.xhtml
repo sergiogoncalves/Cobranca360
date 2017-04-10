@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>Busca pessoa</title>
+
+
+        <h:outputScript name="js/maps.js" library="olympos-layout" />
+        <h:outputScript name="js/nanoscroller.js" library="olympos-layout" />
+        <h:outputScript name="js/layout.js" library="olympos-layout" />
+
+    </h:head>
+
+    <h:body style="background-color: white">
+        <h:form id="formInicial">
+            <p:remoteCommand name="onload" autoRun="true" />
+        </h:form>
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:panelGrid id="pnlLoading" columns="1" styleClass="ui-panelgrid-blank ui-fluid" style="vertical-align: central; text-align: center;" layout="grid" >
+                <p:graphicImage name="carregando.gif" library="imgs"  />
+                <h:outputLabel value="Processando" />
+            </p:panelGrid>
+        </p:dialog>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <h:form id="formGeral" >
+            <div class="Container100 Responsive100 NoIndent Flex FlexWrap">
+                <div class="Container100">
+
+                    <h3 class="CardBigTopic TexAlLeft">Filtro</h3>
+                    <div class="Separator"></div>
+
+                    <h:panelGrid columns="1" styleClass="ui-fluid ui-panelgrid-blank">
+                        <h:panelGroup>
+                            <h:panelGrid columns="6" columnClasses="alignmentLeft">
+                                <p:outputLabel for="nome" value="Nome:" styleClass="fonteOutputText" />
+                                <p:inputText id="nome"   value="#{pessoaBuscaCtr.empresatb02PessoaBusca.nome}"/>
+                                <p:outputLabel for="cpf" value="CPF/CNPJ:" styleClass="fonteOutputText" />
+                                <p:inputText id="cpf"  value="#{pessoaBuscaCtr.empresatb02PessoaBusca.cpfCnpj}"/>
+                                <p:commandButton value="Buscar"  action="#{pessoaBuscaCtr.buscarPessoa}" update="formGeral" icon="fa fa-search Fs16 White"  styleClass="GreenButton" />
+                                <p:hotkey bind="ctrl+1" update="formGeral" actionListener="#{pessoaBuscaCtr.buscarPessoa}"/>
+                            </h:panelGrid>
+                        </h:panelGroup>
+
+                        <h:panelGroup>
+                            <h:panelGrid columns="1" columnClasses="alignmentLeft" >
+                                <p:selectOneRadio id="txtTipoTitulo" styleClass="fonteOutputText" value="#{pessoaBuscaCtr.empresatb02PessoaBusca.tipoPessoa}" >
+                                    <f:selectItem itemLabel="Pessoa Física" itemValue="F"   />
+                                    <f:selectItem itemLabel="Pessoa Jurídica" itemValue="J" />
+                                </p:selectOneRadio>
+                            </h:panelGrid>
+                        </h:panelGroup>
+
+                    </h:panelGrid>
+
+                    <br/>
+                    <p:outputLabel  value="Resultados encontrados: #{pessoaBuscaCtr.qtdeResultado} " styleClass="fonteOutputText"  />
+                    <br/>
+                    <br/>
+                    <p:dataTable id="pessoaFisicaEncontrada" 
+                                 var="pessoaEncontrada" 
+                                 value="#{pessoaBuscaCtr.empresatb03PessoaFisicaResultadoColl}" 
+                                 selectionMode="single"  
+                                 rowKey="#{pessoaEncontrada.pessoaFisicaCodigo}"
+                                 paginator="false" 
+                                 emptyMessage="Sem pessoas encontradas" 
+                                 styleClass="ui-datatable"
+                                 rendered="#{pessoaBuscaCtr.empresatb03PessoaFisicaResultadoColl.size() > 0}"
+                                 >
+                        <p:ajax event="rowSelect"  listener="#{pessoaBuscaCtr.onRowSelect}" />
+                        <p:column headerText="Nome" style="text-align: left; " styleClass="tabelaTitulo"  >     
+                            <h:outputText value="#{pessoaEncontrada.empresatb02Pessoa.nome}" styleClass="tabelaConteudo" />
+                        </p:column>  
+
+                        <p:column headerText="CPF" style="text-align: left; " styleClass="tabelaTitulo"  >     
+                            <h:outputText value="#{pessoaEncontrada.docFederal}" styleClass="tabelaConteudo" />
+                        </p:column> 
+                    </p:dataTable> 
+
+                    <p:dataTable id="pessoaJuridicaEncontrada" 
+                                 var="pessoaJuridicaEncontrada" 
+                                 value="#{pessoaBuscaCtr.empresatb04PessoaJuridicaResultadoColl}" 
+                                 selectionMode="single"  
+                                 rowKey="#{pessoaEncontrada.pessoaFisicaCodigo}"
+                                 paginator="false" 
+                                 emptyMessage="Sem pessoas encontradas" 
+                                 styleClass="ui-datatable"
+                                 rendered="#{pessoaBuscaCtr.empresatb04PessoaJuridicaResultadoColl.size() > 0}"
+                                 >
+
+                        <p:column headerText="Nome Fantasia" style="text-align: left; " styleClass="tabelaTitulo"  >     
+                            <h:outputText value="#{pessoaJuridicaEncontrada.nomeFantasia}" styleClass="tabelaConteudo" />
+                        </p:column>  
+
+                        <p:column headerText="CNPJ" style="text-align: left; " styleClass="tabelaTitulo"  >     
+                            <h:outputText value="#{pessoaJuridicaEncontrada.cnpj}" styleClass="tabelaConteudo" />
+                        </p:column> 
+                    </p:dataTable> 
+
+                </div>
+            </div>
+            <div class="Separator"></div>
+            <div class="Container100 Responsive100 NoIndent Flex FlexWrap">
+                <h:form>
+                    <div class="Card TexAlLeft">
+                        <p:commandButton  value="Selecionar pessoa" action="#{pessoaBuscaCtr.retornarSelecao}"  icon="fa fa-plus-square Fs5 White" />
+                        <p:commandButton  value="Cancelar" action="#{pessoaBuscaCtr.cancelarSelecao}"  icon="fa fa-times-circle-o Fs5 White" class="RedButton" />
+                    </div>
+                </h:form>
+            </div>
+
+        </h:form>
+
+
+
+
+
+
+
+        <h:outputStylesheet name="css/core-layout.css" library="olympos-layout" />
+        <h:outputStylesheet name="css/font-awesome.css" library="olympos-layout" />
+        <h:outputStylesheet name="css/nanoscroller.css" library="olympos-layout" />
+        <h:outputStylesheet name="css/animate.css" library="olympos-layout" />
+        <h:outputStylesheet name="css/olympos-layout.css" library="olympos-layout" />
+        <h:outputStylesheet name="css/olympos-font.css" library="olympos-layout" />
+        <h:outputStylesheet name="css/meus.css" library="olympos-layout" />
+
+    </h:body>
+</html>
