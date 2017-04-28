@@ -5,23 +5,88 @@
  */
 
 var titulo = document.querySelector("h1");
-titulo.textContent = "Cleciane";
+titulo.textContent = "Consultório Médico";
 
-var paciente = document.querySelector("#primeiro-paciente");
+console.log("Vai passar 02");
+titulo.addEventListener("click", function () {
+    console.log("Houve um click");
+});
 
-var tdPeso   = paciente.querySelector(".info-peso");
-var tdAltura = paciente.querySelector(".info-altura");
-var tdImc    = paciente.querySelector(".info-imc");
+var botaoAdicionar = document.querySelector("#adicionar-paciente");
 
-var peso   = tdPeso.textContent;
-var altura = tdAltura.textContent;
+console.log(botaoAdicionar);
+botaoAdicionar.addEventListener("click", function (event) {
+    event.preventDefault();
 
-var imc = peso /(altura * altura);
+    var form = document.querySelector("#form-adiciona");
+    
+    var pacienteTr = document.createElement("tr");
+    
+    var nomeTd = document.createElement("td");
+    var pesoTd = document.createElement("td");
+    var alturaTd = document.createElement("td");
+    var gorduraTd = document.createElement("td");
+    var imcTd = document.createElement("td");
+    
+    var nome = form.nome.value;
+    var peso = form.peso.value;
+    var altura = form.altura.value;
+    var gordura = form.gordura.value;
+    
+    console.log(form.altura.value);
+    
+    nomeTd.textContent = nome;
+    pesoTd.textContent = peso;
+    alturaTd.textContent = altura; 
+    gorduraTd.textContent = gordura;
+    
+    pacienteTr.appendChild(nomeTd);
+    pacienteTr.appendChild(pesoTd);
+    pacienteTr.appendChild(alturaTd);
+    pacienteTr.appendChild(gorduraTd);
+    
+   var tabela = document.querySelector("#tabela-pacientes");
+   
+   tabela.appendChild(pacienteTr);
+});
 
-tdImc.textContent = imc;
+//var paciente = document.querySelector(".paciente"); //Query selector só traz um registro]
 
-console.log(paciente);
-console.log(tdPeso);
-console.log(peso);
-console.log(altura);
-console.log(imc);
+
+
+
+
+console.log("Vai passar 01");
+var pacientes = document.querySelectorAll(".paciente");
+
+
+
+for (var i = 0; i <= pacientes.length; i++) {
+    var paciente = pacientes[i];
+
+    var tdPeso = paciente.querySelector(".info-peso");
+    var tdAltura = paciente.querySelector(".info-altura");
+    var tdImc = paciente.querySelector(".info-imc");
+
+    var peso = tdPeso.textContent;
+    var altura = tdAltura.textContent;
+
+    if (peso < 0 || peso > 1000) {
+        console.log("Peso inválido");
+
+        tdImc.textContent = "Peso inválido";
+        paciente.classList.add("paciente-invalido");
+    } else {
+        var imc = peso / (altura * altura);
+        tdImc.textContent = imc.toFixed(2);
+    }
+
+}
+
+
+
+
+
+
+
+
