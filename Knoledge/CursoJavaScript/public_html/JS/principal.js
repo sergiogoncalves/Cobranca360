@@ -15,10 +15,6 @@ titulo.addEventListener("click", function () {
 
 //var paciente = document.querySelector(".paciente"); //Query selector só traz um registro]
 
-
-
-
-
 console.log("Vai passar 01");
 var pacientes = document.querySelectorAll(".paciente");
 
@@ -34,7 +30,7 @@ for (var i = 0; i <= pacientes.length; i++) {
     var peso = tdPeso.textContent;
     var altura = tdAltura.textContent;
 
-    if (peso < 0 || peso > 1000) {
+    if (!validaPeso(peso)) {
         console.log("Peso inválido");
 
         tdImc.textContent = "Peso inválido";
