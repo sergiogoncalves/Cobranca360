@@ -15,7 +15,7 @@ botaoAdicionar.addEventListener("click", function (event) {
     if (erros.length > 0) {
         var mensagemErro = document.querySelector("#mensagem-erro");
 
-        mensagemErro.textContent = erro;
+        exibeMensagemErros(erros);
 
         return;
 
@@ -26,6 +26,9 @@ botaoAdicionar.addEventListener("click", function (event) {
     tabela.appendChild(pacienteTr);
 
     form.reset();
+
+    var ul = document.querySelector("#mensagem-erro");
+    ul.innerHTML = "";
 });
 
 
@@ -94,9 +97,35 @@ function validaPaciente(paciente) {
 
     if (!validaAltura(paciente.peso))
         erros.push("Altura inválida");
+    if (paciente.nome.length == 0)
+        erros.push("Nome de paciente inválido");
+
+    if (paciente.gordura.length == 0)
+        erros.push("Gordura inválida");
+
+    if (paciente.peso.length == 0)
+        erros.push("Peso inválido");
+
+    if (paciente.altura.length == 0)
+        erros.push("Altura inválida");
 
 
     return erros;
 }
 ;
+
+function exibeMensagemErros(erros) {
+    var ul = document.querySelector("#mensagem-erro");
+    ul.innerHTML = "";
+
+    erros.forEach(function (erro) {
+        var li = document.createElement("li");
+
+        li.textContent = erro;
+
+        ul.appendChild(li);
+    });
+}
+
+
 
