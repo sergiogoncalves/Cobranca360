@@ -95,8 +95,8 @@ function validaPaciente(paciente) {
     if (!validaPeso(paciente.peso))
         erros.push("Peso é inválido");
 
-    if (!validaAltura(paciente.peso))
-        erros.push("Altura inválida");
+   // if (!validaAltura(paciente.peso))
+   //     erros.push("Altura inválida");
     if (paciente.nome.length == 0)
         erros.push("Nome de paciente inválido");
 
@@ -106,8 +106,8 @@ function validaPaciente(paciente) {
     if (paciente.peso.length == 0)
         erros.push("Peso inválido");
 
-    if (paciente.altura.length == 0)
-        erros.push("Altura inválida");
+   // if (paciente.altura.length == 0)
+   //     erros.push("Altura inválida");
 
 
     return erros;
