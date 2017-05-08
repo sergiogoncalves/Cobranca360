@@ -602,3 +602,103 @@ Audio Player
 
 moved away
 mudou-se
+
+Something came up.
+Algo aconteceu.
+Audio Player
+
+issue
+problema
+Audio Player
+
+right job
+emprego certo
+Audio Player
+
+overtime
+hora extra
+Audio Player
+
+compensation
+remuneração
+Audio Player
+
+time off
+férias
+Audio Player
+
+three weeks off
+três semanas de férias
+Audio Player
+
+career choice
+opção de carreira
+
+Do you ever have any doubts?
+Alguma vez você tem dúvidas?
+Audio Player
+
+No - none at all.
+Não, nunca.
+Audio Player
+
+I'm completely sure ...
+Tenho total certeza...
+Audio Player
+
+I'm wondering if ...
+Estou pensando se...
+Audio Player
+
+I doubt it.
+Duvido.
+Audio Player
+
+You're sure?
+Tem certeza?
+Audio Player
+
+absolutely
+definitivamente
+
+excited
+entusiasmado
+Audio Player
+
+lonely
+solitário
+Audio Player
+
+lovely
+adorável
+Audio Player
+
+kind
+gentil
+Audio Player
+
+sociable
+sociável
+Audio Player
+
+quiet
+quieto
+Audio Player
+
+pessimistic
+pessimista
+Audio Player
+
+depressed
+deprimido
+
+Bob was always a hardworking man.
+Bob sempre foi um homem trabalhador.
+Audio Player
+
+He often worked late.
+Ele costumava trabalhar até tarde.
+Audio Player
+
+That just leaves Bob.
+Só sobra o Bob.
