@@ -752,3 +752,80 @@ Audio Player
 
 feeling a lot better about
 sentindo-se muito melhor a respeito de
+
+barbecue
+churrasco
+Audio Player
+
+regulations
+regulamentações
+Audio Player
+
+balconies
+terraços
+Audio Player
+
+allowed
+permitido
+Audio Player
+
+law
+lei
+Audio Player
+
+safety concerns
+preocupações com segurança
+Audio Player
+
+prohibited
+proibido
+Audio Player
+
+fine
+multa
+Audio Player
+
+put out
+apagar NOTE FOR TRANSLATORS: As in, put out a fire.)
+Audio Player
+
+rules
+regras
+
+It's been brought to my attention ...
+Fui informado de que.
+Audio Player
+
+Did you not get our email?
+Não recebeu o nosso e-mail?
+Audio Player
+
+There's now a regulation against ...
+Agora existe uma regulamentação sobre...
+Audio Player
+
+It's a city law.
+É uma lei municipal.
+Audio Player
+
+There's actually a $200 fine.
+Na verdade, há uma multa de US$ 200.
+Audio Player
+
+Rules are there to keep people safe.
+As regras existem para garantir a segurança das pessoas.
+Audio Player
+
+You can't just go starting fires.
+Você não pode botar fogo por aí.
+
+Yes, I'm afraid there is.
+Sim, temo que sim.
+Audio Player
+
+I'm sorry.
+Sinto muito.
+Audio Player
+
+I'd really like to help you, but ...
+Gostaria muito de poder ajudar, mas.
