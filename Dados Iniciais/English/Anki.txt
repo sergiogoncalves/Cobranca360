@@ -829,3 +829,68 @@ Audio Player
 
 I'd really like to help you, but ...
 Gostaria muito de poder ajudar, mas.
+
+first-aid kit
+kit de primeiros socorros
+Audio Player
+
+antiseptic
+antisséptico
+Audio Player
+
+sting
+doer
+Audio Player
+
+bagel
+Audio Player
+
+blood
+sangue
+Audio Player
+
+bandage
+curativo
+Audio Player
+
+sore
+dolorido
+Audio Player
+
+company policy
+política da empresa
+Audio Player
+
+infected
+infectado
+
+
+I just cut myself!
+Eu me cortei!
+Audio Player
+
+She cut herself.
+Ela se cortou.
+
+Actually, it's company policy.
+Na verdade, é política da empresa.
+Audio Player
+
+Company policy is very clear on this.
+A política da empresa é bem clara a respeito.
+Audio Player
+
+What if it becomes infected?
+E se infeccionar?
+Audio Player
+
+I think it'll be okay.
+Acho que ficará tudo bem.
+Audio Player
+
+Let's not take any chances.
+Não vamos arriscar.
+Audio Player
+
+I suppose you're right.
+Acho que está certo.
